@@ -39,6 +39,7 @@ class EchoBot(sleekxmpp.ClientXMPP):
 
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
+        self.control_fields = {'lol': {}}
 
         # The session_start event will be triggered when
         # the bot establishes its connection with the server
@@ -51,7 +52,7 @@ class EchoBot(sleekxmpp.ClientXMPP):
         # stanza is received. Be aware that that includes
         # MUC messages and error messages.
         # self.add_event_handler("message", self.message)
-        self.add_event_handler('message', self.message)
+        logging.debug("Echo Device started")
 
     def start(self, event):
         """
@@ -69,27 +70,12 @@ class EchoBot(sleekxmpp.ClientXMPP):
         self.send_presence()
         self.get_roster()
 
-    def message(self, msg):
-        """
-        Process incoming message stanzas. Be aware that this also
-        includes MUC messages and error messages. It is usually
-        a good idea to check the messages's type before processing
-        or sending replies.
-
-        Arguments:
-            msg -- The received message stanza. See the documentation
-                   for stanza objects and the Message stanza to see
-                   how it may be used.
-        """
-        # if msg['type'] in ('chat', 'normal', 'set'):
-        print('::Received Message::')
-        print(msg)
-
     def has_control_field(self, field, typename):
         print('works?!')
         return True
 
     def set_control_fields(self, fields, session, callback):
+        print('set_control_fields')
         for name, typename, value in fields:
             print('%s %s') % (name, value)
 
