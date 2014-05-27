@@ -29,7 +29,7 @@ class ControlSet(ElementBase):
     pass
 
 
-class BooleanParam(BaseParameter):
+class BooleanParam(ElementBase):
     name = 'boolean'
     namespace = 'urn:xmpp:iot:control'
     interfaces = set(('name', 'value'))
