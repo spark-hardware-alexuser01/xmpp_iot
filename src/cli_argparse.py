@@ -9,7 +9,7 @@ def gen_args(arg_parser=None):
     arg_parser.add_argument('-j', '--jid', dest='jid', required=True,
                             help='IoT Device\'s JID to be used.')
     arg_parser.add_argument('-p', '--password', dest='password',
-                            help='Password for used JID')
+                            required=True, help='Password for used JID')
 
     # IoT configuration
     arg_parser.add_argument('-nc', '--nodeid-control', dest='nodeid_control',
