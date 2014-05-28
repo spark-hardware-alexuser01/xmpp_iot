@@ -16,6 +16,9 @@ import sleekxmpp
 from controls import Controls
 from sensors import Sensors
 
+import cli_argparse
+
+
 LOG_FORMAT = '%(levelname)-8s %(message)s'
 
 
@@ -46,11 +49,12 @@ class IoTDevice(sleekxmpp.ClientXMPP):
 
 
 if __name__ == '__main__':
+    arg_parser = cli_argparse.gen_args()
+    args = cli_argparse.parse_args()
 
+    # logging.basicConfig(level=options.loglevel, format=LOG_FORMAT)
 
-    logging.basicConfig(level=options.loglevel, format=LOG_FORMAT)
-
-    xmpp = IoTDevice(options.jid, options.password)
+    xmpp = IoTDevice(args.jid, args.password)
     # register nescessary plugins
     xmpp.register_plugin('xep_0030')
     xmpp.register_plugin('xep_0325')
