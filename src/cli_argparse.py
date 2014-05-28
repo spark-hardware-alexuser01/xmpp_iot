@@ -1,4 +1,5 @@
 import argparse
+import logging
 
 
 def gen_args(arg_parser=None):
@@ -18,18 +19,27 @@ def gen_args(arg_parser=None):
                             help='NodeId to be used for Sensor')
 
     # Logging
-    # optp.add_option('-q', '--quiet', help='set logging to ERROR',
-    #                 action='store_const', dest='loglevel',
-    #                 const=logging.ERROR, default=logging.INFO)
-    # optp.add_option('-d', '--debug', help='set logging to DEBUG',
-    #                 action='store_const', dest='loglevel',
-    #                 const=logging.DEBUG, default=logging.INFO)
-    # optp.add_option('-v', '--verbose', help='set logging to COMM',
-    #                 action='store_const', dest='loglevel',
-    #                 const=5, default=logging.INFO)
-    # optp.add_option('-t', '--pingto', help='set jid to ping',
-    #                 action='store', type='string', dest='pingjid',
-    #                 default=None)
+    arg_parser.add_argument('-q', '--quiet',
+                            action='store_const',
+                            dest='loglevel',
+                            const=logging.ERROR,
+                            default=logging.INFO,
+                            help='set logging to ERROR')
+
+    arg_parser.add_argument('-d', '--debug',
+                            action='store_const',
+                            dest='loglevel',
+                            const=logging.DEBUG,
+                            default=logging.INFO,
+                            help='set logging to DEBUG')
+
+    # krg_parser.add_argument('-v', '--verbose',
+    #                         help='set logging to COMM',
+    #                         action='store_const',
+    #                         dest='loglevel',
+    #                         const=5,
+    #                         default=logging.INFO)
+
     return arg_parser
 
 
