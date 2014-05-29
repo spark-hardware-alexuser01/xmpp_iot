@@ -66,6 +66,7 @@ if __name__ == '__main__':
                                    device=sensors,
                                    commTimeout=10)
     controls = Controls('switch')
+    controls._add_control_field('lightswitch', 'boolean', str(False))
 
     # begin stuff
     xmpp.connect()
