@@ -75,4 +75,66 @@ class ClearCache(ElementBase):
    interfaces = set(tuple())
    plugin_attrib = name
 
+class CredentialParameter(ElementBase):
+   """Parameter elements that act as credentials.
+         JidCredentialParameter
+         Ip4CredentialParameter
+         Ip6CredentialParameter
+         HostNameCredentialParameter
+         X509CertificateCredentialParameter
+         UserNameCredentialParameter
+         LongitudeCredentialParameter
+         LatitudeCredentialParameter
+         AltitudeCredentialParameter
+         SsoCredentialParameter
+         ProtocolCredentialParameter
+   """
+   namespace = 'urn:xmpp:iot:provisioning'
+   name = 'credentialParameter'
+   plugin_attrib = name
+   interfaces = set(['type', 'value'])
+
+class JidCredentialParameter(ElementBase):
+   name = 'jid'
+   plugin_attrib = name
+
+class Ip4CredentialParameter(ElementBase):
+   name = 'ip4'
+   plugin_attrib = name
+
+class Ip6CredentialParameter(ElementBase):
+   name = 'ip6'
+   plugin_attrib = name
+
+class HostNameCredentialParameter(ElementBase):
+   name = 'hostName'
+   plugin_attrib = name
+
+class X509CertificateCredentialParameter(ElementBase):
+   name = 'x509Certificate'
+   plugin_attrib = name
+
+class UserNameCredentialParameter(ElementBase):
+   name = 'userName'
+   plugin_attrib = name
+
+class LongitudeCredentialParameter(ElementBase):
+   name = 'longitude'
+   plugin_attrib = name
+
+class LatitudeCredentialParameter(ElementBase):
+   name = 'latitude'
+   plugin_attrib = name
+
+class AltitudeCredentialParameter(ElementBase):
+   name = 'altitude'
+   plugin_attrib = name
+
+class SsoCredentialParameter(ElementBase):
+   name = 'sso'
+   plugin_attrib = name
+
+class ProtocolCredentialParameter(ElementBase):
+   name = 'protocol'
+   plugin_attrib = name
 
