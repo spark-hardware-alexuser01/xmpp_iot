@@ -22,19 +22,19 @@ class Provisioning(ElementBase):
 class FriendRequest(ElementBase):
    name = 'isFriend'
    namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(('jid'))
+   interfaces = set(['jid'])
    plugin_attrib = name 
 
 class Unfriend(ElementBase):
    name = 'unfriend'
    namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(('jid'))
+   interfaces = set(['jid'])
    plugin_attrib = name 
 
-class recommendFriend(ElementBase):
+class RecommendFriend(ElementBase):
    name = 'friend'
    namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(('jid'))
+   interfaces = set(['jid'])
    plugin_attrib = name 
 
 """I did not do rejecting read-outs because it was an
@@ -43,20 +43,36 @@ class recommendFriend(ElementBase):
    nodes part, saw some examples of how it might
    be done through sensor data"""
 
-class get_token(ElementBase): 
+class GetToken(ElementBase): 
    name = 'getToken'
    namespace = 'urn:xmpp:iot:provisioning'
    interfaces = set(tuple())
    plugin_attrib = name
 
-class get_token_challenge(ElementBase):
+class GetTokenChallenge(ElementBase):
    name = 'getTokenChallenge'
    namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(('seqnr'))
+   interfaces = set(['seqnr'])
    plugin_attrib = name
 
 
+class CanRead(ElementBase):
+   name = 'canRead'
+   namespace = 'urn:xmpp:iot:provisioning'
+   interfaces = set(['jid', 'serviceToken', 'userToken', 'momentary'])
+   plugin_attrib = name
 
+#I don't think canControl has a momentary value in the interfaces set...
+class CanControl(ElementBase):
+   name = 'canControl'
+   namespace = 'urn:xmpp:iot:provisioning'
+   interfaces = set(['jid', 'serviceToken', 'userToken'])
+   plugin_attrib = name
 
+class ClearCache(ElementBase): 
+   name = 'clearCache'
+   namespace = 'urn:xmpp:iot:provisioning'
+   interfaces = set(tuple())
+   plugin_attrib = name
 
 
