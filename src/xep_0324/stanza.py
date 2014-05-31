@@ -23,23 +23,40 @@ class FriendRequest(ElementBase):
    name = 'isFriend'
    namespace = 'urn:xmpp:iot:provisioning'
    interfaces = set(('jid'))
-   #plugin_attrib = ?
+   plugin_attrib = name 
 
 class Unfriend(ElementBase):
    name = 'unfriend'
    namespace = 'urn:xmpp:iot:provisioning'
    interfaces = set(('jid'))
-   #plugin_attrib = ?
+   plugin_attrib = name 
 
 class recommendFriend(ElementBase):
    name = 'friend'
    namespace = 'urn:xmpp:iot:provisioning'
    interfaces = set(('jid'))
-   #plugin_attrib = ?
+   plugin_attrib = name 
 
 """I did not do rejecting read-outs because it was an
    extension of sensor data, however I studied it for
    a while, and realized I have no idea how to do the 
    nodes part, saw some examples of how it might
    be done through sensor data"""
+
+class get_token(ElementBase): 
+   name = 'getToken'
+   namespace = 'urn:xmpp:iot:provisioning'
+   interfaces = set(tuple())
+   plugin_attrib = name
+
+class get_token_challenge(ElementBase):
+   name = 'getTokenChallenge'
+   namespace = 'urn:xmpp:iot:provisioning'
+   interfaces = set(('seqnr'))
+   plugin_attrib = name
+
+
+
+
+
 
