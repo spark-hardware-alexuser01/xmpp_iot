@@ -78,9 +78,6 @@ if __name__ == '__main__':
     xmpp['xep_0323'].register_node(nodeId=thermometer.nodeId,
                                    device=thermometer,
                                    commTimeout=10)
-    xmpp['xep_0323'].session_bind('')
-    controls = Controls('switch')
-    controls._add_control_field('lightswitch', 'boolean', str(False))
 
     # begin stuff
     xmpp.connect()
