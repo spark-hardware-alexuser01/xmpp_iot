@@ -31,6 +31,7 @@ class Sensors(object):
         self.timestamp_data = {}
         self.momentary_data = {}
         self.momentary_timestamp = ""
+
         logging.debug("Device object started nodeId %s",nodeId)
 
     def has_field(self, field):
@@ -40,6 +41,7 @@ class Sensors(object):
         Arguments:
             field      -- The field name
         """
+        logging.debug('has_field() field: '+str(field))
         if field in self.fields.keys():
             return True;
         return False;
