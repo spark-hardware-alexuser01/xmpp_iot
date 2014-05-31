@@ -30,6 +30,12 @@ class IoTConsole(sleekxmpp.ClientXMPP):
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
         self.add_event_handler("session_start", self.session_start)
+        self.register_plugin('xep_0030')
+        self.register_plugin('xep_0004')  # Data Forms
+        self.register_plugin('xep_0060')  # PubSub
+        self.register_plugin('xep_0199')  # XMPP Ping
+        self.register_plugin('xep_0325')
+        self.register_plugin('xep_0323')
 
     def session_start(self, event):
         self.send_presence()
@@ -37,8 +43,7 @@ class IoTConsole(sleekxmpp.ClientXMPP):
 
         xmpp['xep_0323'].request_data(from_jid=xmpp.boundjid.bare,
                                       to_jid='node0000@xmpp.jp',
-                                      callback=sensor_readout,
-                                      nodeIds=['thermometer'])
+                                      callback=sensor_readout)
 
 
 def sensor_readout(from_jid, result, nodeId, timestamp, fields, error_msg):
@@ -52,9 +57,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=args.loglevel, format=LOG_FORMAT)
 
     xmpp = IoTConsole(args.jid, args.password)
-    xmpp.register_plugin('xep_0030')
-    xmpp.register_plugin('xep_0325')
-    xmpp.register_plugin('xep_0323')
 
     xmpp.connect()
     xmpp.process(block=True)

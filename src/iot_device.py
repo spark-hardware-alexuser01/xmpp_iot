@@ -13,6 +13,7 @@
 
 import logging
 import sleekxmpp
+import thermic
 from controls import Controls
 from sensors import Sensors
 
@@ -31,6 +32,12 @@ class IoTDevice(sleekxmpp.ClientXMPP):
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
         self.add_event_handler("session_start", self.session_start)
+        self.register_plugin('xep_0030')
+        self.register_plugin('xep_0004')  # Data Forms
+        self.register_plugin('xep_0060')  # PubSub
+        self.register_plugin('xep_0199')  # XMPP Ping
+        self.register_plugin('xep_0325')
+        self.register_plugin('xep_0323')
 
     def session_start(self, event):
         self.send_presence()
@@ -46,6 +53,14 @@ class IoTDevice(sleekxmpp.ClientXMPP):
 #     def __init__(self, nodeId, fields):
 #         self.nodeId = nodeId
 
+class Thermometer(Sensors):
+    def __init__(self, nodeId):
+        Sensors.__init__(self, nodeId)
+        self.temps = thermic.find_sensors()
+
+    def refresh(self, fields):
+        self._set_momentary_timestamp(self._get_timestamp())
+        self._add_field_momentary_data('temperature', str(self.temps[0].tempc))
 
 if __name__ == '__main__':
     arg_parser = cli_argparse.gen_args()
@@ -55,16 +70,15 @@ if __name__ == '__main__':
 
     xmpp = IoTDevice(args.jid, args.password)
     # register nescessary plugins
-    xmpp.register_plugin('xep_0030')
-    xmpp.register_plugin('xep_0325')
-    xmpp.register_plugin('xep_0323')
 
     # create sensors and controlls
-    sensors = Sensors('thermometer')
-    sensors._add_field(name="temperature", typename="numeric", unit="C")
-    xmpp['xep_0323'].register_node(nodeId='thermometer',
-                                   device=sensors,
+    thermometer = Thermometer('thermometer')
+    thermometer._add_field(name="temperature", typename="numeric", unit="C")
+    thermometer.refresh({})
+    xmpp['xep_0323'].register_node(nodeId=thermometer.nodeId,
+                                   device=thermometer,
                                    commTimeout=10)
+    xmpp['xep_0323'].session_bind('')
     controls = Controls('switch')
     controls._add_control_field('lightswitch', 'boolean', str(False))
 
