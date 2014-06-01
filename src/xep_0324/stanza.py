@@ -1,42 +1,44 @@
 from sleekxmpp.xmlstream import ET, ElementBase, register_stanza_plugin
 from sleekxmpp.stanza import Iq
 
+
 class Provisioning(ElementBase):
-   """
-   A stanza class for IoT Provisioning
+    """
+    A stanza class for IoT Provisioning
 
-   example
-   <iq type = 'get'
-   from='device@clayster.com/device'
-   to='provisioning.clayster.com'
-   id='9'>
-   <isFriend xmlns='urn:xmpp:iot:provisioning' jid='client1@clayster.com'/>
-   </iq>
-   """
-   name = 'set' #could this be called foo?
-   namespace = 'urn:xmpp:iot:provisioning'
-   plugin_attrib = 'provisioning'
-   interfaces = set()
+    example
+    <iq type = 'get'
+    from='device@clayster.com/device'
+    to='provisioning.clayster.com'
+    id='9'>
+    <isFriend xmlns='urn:xmpp:iot:provisioning' jid='client1@clayster.com'/>
+    </iq>
+    """
+    name = 'set'  # could this be called foo?
+    namespace = 'urn:xmpp:iot:provisioning'
+    plugin_attrib = 'provisioning'
+    interfaces = set()
 
-"""skipped 3.1: Delegating Trust, seemed complicated"""
 
 class FriendRequest(ElementBase):
-   name = 'isFriend'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(['jid'])
-   plugin_attrib = name
+    name = 'isFriend'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['jid'])
+    plugin_attrib = name
+
 
 class Unfriend(ElementBase):
-   name = 'unfriend'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(['jid'])
-   plugin_attrib = name
+    name = 'unfriend'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['jid'])
+    plugin_attrib = name
+
 
 class RecommendFriend(ElementBase):
-   name = 'friend'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(['jid'])
-   plugin_attrib = name
+    name = 'friend'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['jid'])
+    plugin_attrib = name
 
 """I did not do rejecting read-outs because it was an
    extension of sensor data, however I studied it for
@@ -44,39 +46,48 @@ class RecommendFriend(ElementBase):
    nodes part, saw some examples of how it might
    be done through sensor data"""
 
+
 class GetToken(ElementBase):
-   name = 'getToken'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(tuple())
-   plugin_attrib = name
+    name = 'getToken'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(tuple())
+    plugin_attrib = name
+
+
+class GetTokenResponse(ElementBase):
+    name = 'getTokenResponse'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['token'])
+    plugin_attrib = name
+
 
 class GetTokenChallenge(ElementBase):
-   name = 'getTokenChallenge'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(['seqnr'])
-   plugin_attrib = name
+    name = 'getTokenChallenge'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['seqnr'])
+    plugin_attrib = name
 
 
 class CanRead(ElementBase):
-   name = 'canRead'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(['jid', 'serviceToken', 'userToken', 'momentary'])
-   plugin_attrib = name
+    name = 'canRead'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['jid', 'serviceToken', 'userToken', 'momentary'])
+    plugin_attrib = name
 
-#I don't think canControl has a momentary value in the interfaces set...
+
+# I don't think canControl has a momentary value in the interfaces set...
 class CanControl(ElementBase):
-   name = 'canControl'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(['jid', 'serviceToken', 'userToken'])
-   plugin_attrib = name
+    name = 'canControl'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['jid', 'serviceToken', 'userToken'])
+    plugin_attrib = name
+
 
 class ClearCache(ElementBase):
-   name = 'clearCache'
-   namespace = 'urn:xmpp:iot:provisioning'
-   interfaces = set(tuple())
-   plugin_attrib = name
-
-
+    name = 'clearCache'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(tuple())
+    plugin_attrib = name
 
 
 class CanAccess(ElementBase):
@@ -128,68 +139,26 @@ class Credentials(ElementBase):
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(['name', 'value'])
 
+
 class CredentialParameter(ElementBase):
-   """Parameter elements that act as credentials.
-         JidCredentialParameter
-         Ip4CredentialParameter
-         Ip6CredentialParameter
-         HostNameCredentialParameter
-         X509CertificateCredentialParameter
-         UserNameCredentialParameter
-         LongitudeCredentialParameter
-         LatitudeCredentialParameter
-         AltitudeCredentialParameter
-         SsoCredentialParameter
-         ProtocolCredentialParameter
-   """
-   namespace = 'urn:xmpp:iot:provisioning'
-   name = 'credentialParameter'
-   plugin_attrib = name
-   interfaces = set(['name', 'value'])
-
-class JidCredentialParameter(ElementBase):
-   name = 'jid'
-   plugin_attrib = name
-
-class Ip4CredentialParameter(ElementBase):
-   name = 'ip4'
-   plugin_attrib = name
-
-class Ip6CredentialParameter(ElementBase):
-   name = 'ip6'
-   plugin_attrib = name
-
-class HostNameCredentialParameter(ElementBase):
-   name = 'hostName'
-   plugin_attrib = name
-
-class X509CertificateCredentialParameter(ElementBase):
-   name = 'x509Certificate'
-   plugin_attrib = name
-
-class UserNameCredentialParameter(ElementBase):
-   name = 'userName'
-   plugin_attrib = name
-
-class LongitudeCredentialParameter(ElementBase):
-   name = 'longitude'
-   plugin_attrib = name
-
-class LatitudeCredentialParameter(ElementBase):
-   name = 'latitude'
-   plugin_attrib = name
-
-class AltitudeCredentialParameter(ElementBase):
-   name = 'altitude'
-   plugin_attrib = name
-
-class SsoCredentialParameter(ElementBase):
-   name = 'sso'
-   plugin_attrib = name
-
-class ProtocolCredentialParameter(ElementBase):
-   name = 'protocol'
-   plugin_attrib = name
+    """
+    Parameter elements that act as credentials.
+    JidCredentialParameter
+    Ip4CredentialParameter
+    Ip6CredentialParameter
+    HostNameCredentialParameter
+    X509CertificateCredentialParameter
+    UserNameCredentialParameter
+    LongitudeCredentialParameter
+    LatitudeCredentialParameter
+    AltitudeCredentialParameter
+    SsoCredentialParameter
+    ProtocolCredentialParameter
+    """
+    namespace = 'urn:xmpp:iot:provisioning'
+    name = 'credentialParameter'
+    plugin_attrib = name
+    interfaces = set(['name', 'value'])
 
 
 register_stanza_plugin(Iq, CanAccess)
