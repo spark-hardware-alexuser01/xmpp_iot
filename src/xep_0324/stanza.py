@@ -5,11 +5,6 @@ from sleekxmpp.stanza import Iq
 class Provisioning(ElementBase):
     """
     A stanza class for IoT Provisioning
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
     example
     <iq type = 'get'
     from='device@clayster.com/device'
@@ -18,39 +13,24 @@ class Provisioning(ElementBase):
     <isFriend xmlns='urn:xmpp:iot:provisioning' jid='client1@clayster.com'/>
     </iq>
     """
-<<<<<<< HEAD
     name = 'set' #could this be called foo?
-=======
-    name = 'set'  # could this be called foo?
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
     namespace = 'urn:xmpp:iot:provisioning'
     plugin_attrib = 'provisioning'
     interfaces = set()
 
-<<<<<<< HEAD
 """skipped 3.1: Delegating Trust, seemed complicated"""
-=======
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
 
 class FriendRequest(ElementBase):
     name = 'isFriend'
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(['jid'])
     plugin_attrib = name
-<<<<<<< HEAD
-=======
-
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
 
 class Unfriend(ElementBase):
     name = 'unfriend'
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(['jid'])
     plugin_attrib = name
-<<<<<<< HEAD
-=======
-
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
 
 class RecommendFriend(ElementBase):
     name = 'friend'
@@ -70,17 +50,12 @@ class GetToken(ElementBase):
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(tuple())
     plugin_attrib = name
-<<<<<<< HEAD
-=======
-
 
 class GetTokenResponse(ElementBase):
     name = 'getTokenResponse'
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(['token'])
     plugin_attrib = name
-
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
 
 class GetTokenChallenge(ElementBase):
     name = 'getTokenChallenge'
@@ -95,7 +70,6 @@ class CanRead(ElementBase):
     interfaces = set(['jid', 'serviceToken', 'userToken', 'momentary'])
     plugin_attrib = name
 
-<<<<<<< HEAD
 #I don't think canControl has a momentary value in the interfaces set...
 class CanControl(ElementBase):
     name = 'canControl'
@@ -105,26 +79,6 @@ class CanControl(ElementBase):
 
 class ClearCache(ElementBase):
     name = 'clearCache'
-=======
-
-# I don't think canControl has a momentary value in the interfaces set...
-class CanControl(ElementBase):
-    name = 'canControl'
-    namespace = 'urn:xmpp:iot:provisioning'
-    interfaces = set(['jid', 'serviceToken', 'userToken'])
-    plugin_attrib = name
-
-
-class ClearCache(ElementBase):
-    name = 'clearCache'
-    namespace = 'urn:xmpp:iot:provisioning'
-    interfaces = set(tuple())
-    plugin_attrib = name
-
-
-class CanAccess(ElementBase):
-    name = 'canAccess'
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(tuple())
     plugin_attrib = name
@@ -180,7 +134,6 @@ class Credentials(ElementBase):
 
 
 class CredentialParameter(ElementBase):
-<<<<<<< HEAD
     """Parameter elements that act as credentials.
           JidCredentialParameter
           Ip4CredentialParameter
@@ -193,27 +146,12 @@ class CredentialParameter(ElementBase):
           AltitudeCredentialParameter
           SsoCredentialParameter
           ProtocolCredentialParameter
-=======
     """
-    Parameter elements that act as credentials.
-    JidCredentialParameter
-    Ip4CredentialParameter
-    Ip6CredentialParameter
-    HostNameCredentialParameter
-    X509CertificateCredentialParameter
-    UserNameCredentialParameter
-    LongitudeCredentialParameter
-    LatitudeCredentialParameter
-    AltitudeCredentialParameter
-    SsoCredentialParameter
-    ProtocolCredentialParameter
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
-    """
+
     namespace = 'urn:xmpp:iot:provisioning'
     name = 'credentialParameter'
     plugin_attrib = name
     interfaces = set(['name', 'value'])
-<<<<<<< HEAD
 
 class JidCredentialParameter(ElementBase):
     name = 'jid'
@@ -258,8 +196,6 @@ class SsoCredentialParameter(ElementBase):
 class ProtocolCredentialParameter(ElementBase):
     name = 'protocol'
     plugin_attrib = name
-=======
->>>>>>> dff0ffb72f30a2a06bd1d4661c9c2697928d43f9
 
 
 register_stanza_plugin(Iq, CanAccess)
