@@ -9,4 +9,3 @@
 """
 
 from sleekxmpp.plugins.xep_0323.stanza.sensordata import *
-
