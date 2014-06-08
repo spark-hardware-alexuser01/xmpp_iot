@@ -29,12 +29,12 @@ log = logging.getLogger(__name__)
 class XEP_0323(BasePlugin):
 
     """
-    XEP-0323: IoT Sensor Data 
+    XEP-0323: IoT Sensor Data
 
 
     This XEP provides the underlying architecture, basic operations and data
     structures for sensor data communication over XMPP networks. It includes
-    a hardware abstraction model, removing any technical detail implemented 
+    a hardware abstraction model, removing any technical detail implemented
     in underlying technologies.
 
     Also see <http://xmpp.org/extensions/xep-0323.html>
@@ -55,10 +55,10 @@ class XEP_0323(BasePlugin):
         Sensordata Event:Rejected -- Received a reject from sensor for a request
         Sensordata Event:Cancelled -- Received a cancel confirm from sensor
         Sensordata Event:Fields   -- Received fields from sensor for a request
-                                     This may be triggered multiple times since 
+                                     This may be triggered multiple times since
                                      the sensor can split up its response in
                                      multiple messages.
-        Sensordata Event:Failure  -- Received a failure indication from sensor 
+        Sensordata Event:Failure  -- Received a failure indication from sensor
                                      for a request. Typically a comm timeout.
 
     Attributes:
@@ -69,7 +69,7 @@ class XEP_0323(BasePlugin):
                     relevant to a request's session. This dictionary is used
                     both by the client and sensor side. On client side, seqnr
                     is used as key, while on sensor side, a session_id is used
-                    as key. This ensures that the two will not collide, so 
+                    as key. This ensures that the two will not collide, so
                     one instance can be both client and sensor.
         Sensor side
         -----------
@@ -89,12 +89,12 @@ class XEP_0323(BasePlugin):
 
         Sensor side
         -----------
-        register_node     -- Register a sensor as available from this XMPP 
+        register_node     -- Register a sensor as available from this XMPP
                              instance.
 
         Client side
         -----------
-        request_data      -- Initiates a request for data from one or more 
+        request_data      -- Initiates a request for data from one or more
                              sensors. Non-blocking, a callback function will
                              be called when data is available.
 
@@ -198,9 +198,9 @@ class XEP_0323(BasePlugin):
     def register_node(self, nodeId, device, commTimeout, sourceId=None, cacheType=None):
         """
         Register a sensor/device as available for serving of data through this XMPP
-        instance. 
+        instance.
 
-        The device object may by any custom implementation to support 
+        The device object may by any custom implementation to support
         specific devices, but it must implement the functions:
           has_field
           request_fields
@@ -212,7 +212,7 @@ class XEP_0323(BasePlugin):
             commTimeout -- Time in seconds to wait between each callback from device during
                            a data readout. Float.
             sourceId    -- [optional] identifying the data source controlling the device
-            cacheType   -- [optional] narrowing down the search to a specific kind of node        
+            cacheType   -- [optional] narrowing down the search to a specific kind of node
         """
         self.nodes[nodeId] = {"device": device,
                               "commTimeout": commTimeout,
@@ -227,9 +227,9 @@ class XEP_0323(BasePlugin):
         """
         Event handler for reception of an Iq with req - this is a request.
 
-        Verifies that 
+        Verifies that
           - all the requested nodes are available
-          - at least one of the requested fields is available from at least 
+          - at least one of the requested fields is available from at least
             one of the nodes
 
         If the request passes verification, an accept response is sent, and
@@ -242,10 +242,10 @@ class XEP_0323(BasePlugin):
         req_ok = True
 
         # Authentication
-        if len(self.test_authenticated_from) > 0 and not iq['from'] == self.test_authenticated_from:
-            # Invalid authentication
-            req_ok = False
-            error_msg = "Access denied"
+        # if len(self.test_authenticated_from) > 0 and not iq['from'] == self.test_authenticated_from:
+        #     # Invalid authentication
+        #     req_ok = False
+        #     error_msg = "Access denied"
 
         # Nodes
         process_nodes = []
@@ -338,7 +338,7 @@ class XEP_0323(BasePlugin):
             iq.send(block=False)
 
     def _threaded_node_request(self, session, process_fields, flags):
-        """ 
+        """
         Helper function to handle the device readouts in a separate thread.
 
         Arguments:
@@ -360,7 +360,7 @@ class XEP_0323(BasePlugin):
                 process_fields, flags=flags, session=session, callback=self._device_field_request_callback)
 
     def _event_comm_timeout(self, session, nodeId):
-        """ 
+        """
         Triggered if any of the readout operations timeout.
         Sends a failure message back to the client, stops communicating
         with the failing device.
@@ -411,7 +411,7 @@ class XEP_0323(BasePlugin):
             self._threaded_node_request(session, process_fields, req_flags)
 
     def _all_nodes_done(self, session):
-        """ 
+        """
         Checks wheter all devices are done replying to the readout.
 
         Arguments:
@@ -423,9 +423,9 @@ class XEP_0323(BasePlugin):
         return True
 
     def _device_field_request_callback(self, session, nodeId, result, timestamp_block, error_msg=None):
-        """ 
+        """
         Callback function called by the devices when they have any additional data.
-        Composes a message with the data and sends it back to the client, and resets 
+        Composes a message with the data and sends it back to the client, and resets
         the timeout timer for the device.
 
         Arguments:
@@ -434,11 +434,11 @@ class XEP_0323(BasePlugin):
             result          -- The current result status of the readout. Valid values are:
                                "error"  - Readout failed.
                                "fields" - Contains readout data.
-                               "done"   - Indicates that the readout is complete. May contain 
+                               "done"   - Indicates that the readout is complete. May contain
                                           readout data.
-            timestamp_block -- [optional] Only applies when result != "error" 
+            timestamp_block -- [optional] Only applies when result != "error"
                                The readout data. Structured as a dictionary:
-              { 
+              {
                 timestamp:     timestamp for this datablock,
                 fields:        list of field dictionary (one per readout field).
                   readout field dictionary format:
@@ -450,7 +450,7 @@ class XEP_0323(BasePlugin):
                     dataType:  The datatype of the field. Only applies to type enum.
                     flags:     [optional] data classifier flags for the field, e.g. momentary
                                Formatted as a dictionary like { "flag name": "flag value" ... }
-                  }  
+                  }
               }
             error_msg        -- [optional] Only applies when result == "error".
                                 Error details when a request failed.
@@ -513,7 +513,7 @@ class XEP_0323(BasePlugin):
             msg.send()
 
     def _handle_event_cancel(self, iq):
-        """ Received Iq with cancel - this is a cancel request. 
+        """ Received Iq with cancel - this is a cancel request.
         Delete the session and confirm. """
 
         seqnr = iq['cancel']['seqnr']
@@ -546,7 +546,7 @@ class XEP_0323(BasePlugin):
     # Client side (data retriever) API
 
     def request_data(self, from_jid, to_jid, callback, nodeIds=None, fields=None, flags=None):
-        """ 
+        """
         Called on the client side to initiade a data readout.
         Composes a message with the request and sends it to the device(s).
         Does not block, the callback will be called when data is available.
@@ -554,7 +554,7 @@ class XEP_0323(BasePlugin):
         Arguments:
             from_jid        -- The jid of the requester
             to_jid          -- The jid of the device(s)
-            callback        -- The callback function to call when data is availble. 
+            callback        -- The callback function to call when data is availble.
 
                             The callback function must support the following arguments:
 
@@ -576,7 +576,7 @@ class XEP_0323(BasePlugin):
                                The timestamp of data in this callback. One callback will only
                                contain data from one timestamp.
                 fields      -- [optional] Mandatory when result == "fields".
-                               List of field dictionaries representing the readout data. 
+                               List of field dictionaries representing the readout data.
                                Dictionary format:
                   {
                     typename:  The field type (numeric, boolean, dateTime, timeSpan, string, enum)
@@ -586,11 +586,11 @@ class XEP_0323(BasePlugin):
                     dataType:  The datatype of the field. Only applies to type enum.
                     flags:     [optional] data classifier flags for the field, e.g. momentary.
                                Formatted as a dictionary like { "flag name": "flag value" ... }
-                  }  
+                  }
 
                 error_msg   -- [optional] Mandatory when result == "rejected" or "failure".
-                               Details about why the request is rejected or failed. 
-                               "rejected" means that the request is stopped, but note that the 
+                               Details about why the request is rejected or failed.
+                               "rejected" means that the request is stopped, but note that the
                                request will continue even after a "failure". "failure" only means
                                that communication was stopped to that specific device, other
                                device(s) (if any) will continue their readout.
@@ -627,10 +627,10 @@ class XEP_0323(BasePlugin):
         return seqnr
 
     def cancel_request(self, session):
-        """ 
+        """
         Called on the client side to cancel a request for data readout.
         Composes a message with the cancellation and sends it to the device(s).
-        Does not block, the callback will be called when cancellation is 
+        Does not block, the callback will be called when cancellation is
         confirmed.
 
         Arguments:
@@ -663,7 +663,7 @@ class XEP_0323(BasePlugin):
         callback(from_jid=iq['from'], result=result)
 
     def _handle_event_rejected(self, iq):
-        """ Received Iq with rejected - this is a reject. 
+        """ Received Iq with rejected - this is a reject.
         Delete the session. """
         seqnr = iq['rejected']['seqnr']
         callback = self.sessions[seqnr]["callback"]
@@ -673,9 +673,9 @@ class XEP_0323(BasePlugin):
         del self.sessions[seqnr]
 
     def _handle_event_cancelled(self, iq):
-        """ 
-        Received Iq with cancelled - this is a cancel confirm. 
-        Delete the session. 
+        """
+        Received Iq with cancelled - this is a cancel confirm.
+        Delete the session.
         """
         #print("Got cancelled")
         seqnr = iq['cancelled']['seqnr']
@@ -685,7 +685,7 @@ class XEP_0323(BasePlugin):
         del self.sessions[seqnr]
 
     def _handle_event_fields(self, msg):
-        """ 
+        """
         Received Msg with fields - this is a data reponse to a request.
         If this is the last data block, issue a "done" callback.
         """
@@ -717,9 +717,9 @@ class XEP_0323(BasePlugin):
             del self.sessions[seqnr]
 
     def _handle_event_failure(self, msg):
-        """ 
+        """
         Received Msg with failure - our request failed
-        Delete the session. 
+        Delete the session.
         """
         seqnr = msg['failure']['seqnr']
         callback = self.sessions[seqnr]["callback"]
@@ -730,8 +730,8 @@ class XEP_0323(BasePlugin):
         del self.sessions[seqnr]
 
     def _handle_event_started(self, msg):
-        """ 
-        Received Msg with started - our request was queued and is now started. 
+        """
+        Received Msg with started - our request was queued and is now started.
         """
         seqnr = msg['started']['seqnr']
         callback = self.sessions[seqnr]["callback"]
