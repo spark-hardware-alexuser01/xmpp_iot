@@ -36,14 +36,20 @@ class IoTConsole(sleekxmpp.ClientXMPP):
         self.register_plugin('xep_0199')  # XMPP Ping
         self.register_plugin('xep_0325')
         self.register_plugin('xep_0323')
+        # self.register_plugin('xep_0324')
 
     def session_start(self, event):
         self.send_presence()
         self.get_roster()
 
-        xmpp['xep_0323'].request_data(from_jid=xmpp.boundjid.bare,
-                                      to_jid='node0000@xmpp.jp',
+        xmpp['xep_0323'].request_data(from_jid=xmpp.boundjid.full,
+                                      to_jid='dev00@localhost/monkey',
                                       callback=sensor_readout)
+        # xmpp['xep_0324'].can_access(credentials=to_jid='dev00@localhost/monkey')
+
+
+def call_can_access():
+    pass
 
 
 def sensor_readout(from_jid, result, nodeId, timestamp, fields, error_msg):

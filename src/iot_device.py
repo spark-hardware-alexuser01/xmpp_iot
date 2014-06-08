@@ -78,7 +78,9 @@ if __name__ == '__main__':
     xmpp['xep_0323'].register_node(nodeId=thermometer.nodeId,
                                    device=thermometer,
                                    commTimeout=10)
-
+    xmpp['xep_0030'].add_feature(feature='urn:xmpp:iot:sensordata',
+                                 node='foo',
+                                 jid=xmpp.boundjid.full)
     # begin stuff
     xmpp.connect()
     xmpp.process(block=True)
