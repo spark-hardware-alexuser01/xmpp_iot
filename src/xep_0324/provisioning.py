@@ -79,8 +79,26 @@ class XEP_0324(BasePlugin):
     def clear_cache_resp(self):
         pass
 
-    def can_access(self):
-        pass
+    def can_access(self,
+                   credentials,
+                   to_jid='',
+                   callback=None,
+                   block=False,
+                   timeout=10):
+        iq = self.xmpp.Iq()
+        iq['from'] = self.xmpp.boundjid.bare
+        iq['to'] = to_jid
+        seqnr = self._get_new_seqnr()
+        iq['id'] = seqnr
+        iq['type'] = 'get'
+
+        for name, typename, value in credentials:
+            iq['get'].add_credential(name, typename, value)
+
+        print(iq)
+        # return iq.send(timeout=timeout,
+        #                block=block,
+        #                callback=callback)
 
     def can_access_resp(self):
         pass
