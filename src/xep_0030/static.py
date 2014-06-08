@@ -70,7 +70,7 @@ class StaticDisco(object):
                 ifrom = ifrom.full
             if (jid, node, ifrom) not in self.nodes:
                 self.nodes[(jid, node, ifrom)] = {'info': DiscoInfo(),
-                                           'items': DiscoItems()}
+                                                  'items': DiscoItems()}
                 self.nodes[(jid, node, ifrom)]['info']['node'] = node
                 self.nodes[(jid, node, ifrom)]['items']['node'] = node
 
@@ -278,10 +278,10 @@ class StaticDisco(object):
         with self.lock:
             self.add_node(jid, node)
             self.get_node(jid, node)['info'].add_identity(
-                    data.get('category', ''),
-                    data.get('itype', ''),
-                    data.get('name', None),
-                    data.get('lang', None))
+                data.get('category', ''),
+                data.get('itype', ''),
+                data.get('name', None),
+                data.get('lang', None))
 
     def set_identities(self, jid, node, ifrom, data):
         """
@@ -309,10 +309,10 @@ class StaticDisco(object):
         with self.lock:
             if self.node_exists(jid, node):
                 self.get_node(jid, node)['info'].del_identity(
-                        data.get('category', ''),
-                        data.get('itype', ''),
-                        data.get('name', None),
-                        data.get('lang', None))
+                    data.get('category', ''),
+                    data.get('itype', ''),
+                    data.get('name', None),
+                    data.get('lang', None))
 
     def del_identities(self, jid, node, ifrom, data):
         """
@@ -334,7 +334,7 @@ class StaticDisco(object):
         with self.lock:
             self.add_node(jid, node)
             self.get_node(jid, node)['info'].add_feature(
-                    data.get('feature', ''))
+                data.get('feature', ''))
 
     def set_features(self, jid, node, ifrom, data):
         """
@@ -358,7 +358,7 @@ class StaticDisco(object):
         with self.lock:
             if self.node_exists(jid, node):
                 self.get_node(jid, node)['info'].del_feature(
-                        data.get('feature', ''))
+                    data.get('feature', ''))
 
     def del_features(self, jid, node, ifrom, data):
         """
@@ -384,9 +384,9 @@ class StaticDisco(object):
         with self.lock:
             self.add_node(jid, node)
             self.get_node(jid, node)['items'].add_item(
-                    data.get('ijid', ''),
-                    node=data.get('inode', ''),
-                    name=data.get('name', ''))
+                data.get('ijid', ''),
+                node=data.get('inode', ''),
+                name=data.get('name', ''))
 
     def del_item(self, jid, node, ifrom, data):
         """
@@ -399,8 +399,8 @@ class StaticDisco(object):
         with self.lock:
             if self.node_exists(jid, node):
                 self.get_node(jid, node)['items'].del_item(
-                        data.get('ijid', ''),
-                        node=data.get('inode', None))
+                    data.get('ijid', ''),
+                    node=data.get('inode', None))
 
     def cache_info(self, jid, node, ifrom, data):
         """

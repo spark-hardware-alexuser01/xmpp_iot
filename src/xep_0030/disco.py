@@ -98,14 +98,14 @@ class XEP_0030(BasePlugin):
         Start the XEP-0030 plugin.
         """
         self.xmpp.register_handler(
-                Callback('Disco Info',
-                         StanzaPath('iq/disco_info'),
-                         self._handle_disco_info))
+            Callback('Disco Info',
+                     StanzaPath('iq/disco_info'),
+                     self._handle_disco_info))
 
         self.xmpp.register_handler(
-                Callback('Disco Items',
-                         StanzaPath('iq/disco_items'),
-                         self._handle_disco_items))
+            Callback('Disco Items',
+                     StanzaPath('iq/disco_items'),
+                     self._handle_disco_items))
 
         register_stanza_plugin(Iq, DiscoInfo)
         register_stanza_plugin(Iq, DiscoItems)
@@ -113,11 +113,11 @@ class XEP_0030(BasePlugin):
         self.static = StaticDisco(self.xmpp, self)
 
         self._disco_ops = [
-                'get_info', 'set_info', 'set_identities', 'set_features',
-                'get_items', 'set_items', 'del_items', 'add_identity',
-                'del_identity', 'add_feature', 'del_feature', 'add_item',
-                'del_item', 'del_identities', 'del_features', 'cache_info',
-                'get_cached_info', 'supports', 'has_identity']
+            'get_info', 'set_info', 'set_identities', 'set_features',
+            'get_items', 'set_items', 'del_items', 'add_identity',
+            'del_identity', 'add_feature', 'del_feature', 'add_item',
+            'del_item', 'del_identities', 'del_features', 'cache_info',
+            'get_cached_info', 'supports', 'has_identity']
 
         for op in self._disco_ops:
             self.api.register(getattr(self.static, op), op, default=True)
@@ -219,7 +219,7 @@ class XEP_0030(BasePlugin):
             self.api.restore_default(op, jid, node)
 
     def supports(self, jid=None, node=None, feature=None, local=False,
-                       cached=True, ifrom=None):
+                 cached=True, ifrom=None):
         """
         Check if a JID supports a given feature.
 
@@ -289,7 +289,7 @@ class XEP_0030(BasePlugin):
         return self.api['has_identity'](jid, node, ifrom, data)
 
     def get_info(self, jid=None, node=None, local=None,
-                       cached=None, **kwargs):
+                 cached=None, **kwargs):
         """
         Retrieve the disco#info results from a given JID/node combination.
 
@@ -341,20 +341,20 @@ class XEP_0030(BasePlugin):
                 local = True
 
         if local:
-            log.debug("Looking up local disco#info data " + \
+            log.debug("Looking up local disco#info data " +
                       "for %s, node %s.", jid, node)
             info = self.api['get_info'](jid, node,
-                    kwargs.get('ifrom', None),
-                    kwargs)
+                                        kwargs.get('ifrom', None),
+                                        kwargs)
             info = self._fix_default_info(info)
             return self._wrap(kwargs.get('ifrom', None), jid, info)
 
         if cached:
-            log.debug("Looking up cached disco#info data " + \
+            log.debug("Looking up cached disco#info data " +
                       "for %s, node %s.", jid, node)
             info = self.api['get_cached_info'](jid, node,
-                    kwargs.get('ifrom', None),
-                    kwargs)
+                                               kwargs.get('ifrom', None),
+                                               kwargs)
             if info is not None:
                 return self._wrap(kwargs.get('ifrom', None), jid, info)
 
@@ -413,8 +413,8 @@ class XEP_0030(BasePlugin):
         """
         if local or local is None and jid is None:
             items = self.api['get_items'](jid, node,
-                    kwargs.get('ifrom', None),
-                    kwargs)
+                                          kwargs.get('ifrom', None),
+                                          kwargs)
             return self._wrap(kwargs.get('ifrom', None), jid, items)
 
         iq = self.xmpp.Iq()
@@ -628,7 +628,7 @@ class XEP_0030(BasePlugin):
             iq -- The incoming disco#items stanza.
         """
         if iq['type'] == 'get':
-            log.debug("Received disco info query from " + \
+            log.debug("Received disco info query from " +
                       "<%s> to <%s>.", iq['from'], iq['to'])
             info = self.api['get_info'](iq['to'],
                                         iq['disco_info']['node'],
@@ -644,11 +644,11 @@ class XEP_0030(BasePlugin):
                     iq.set_payload(info.xml)
                 iq.send()
         elif iq['type'] == 'result':
-            log.debug("Received disco info result from " + \
+            log.debug("Received disco info result from " +
                       "<%s> to <%s>.", iq['from'], iq['to'])
             if self.use_cache:
-                log.debug("Caching disco info result from " \
-                      "<%s> to <%s>.", iq['from'], iq['to'])
+                log.debug("Caching disco info result from "
+                          "<%s> to <%s>.", iq['from'], iq['to'])
                 if self.xmpp.is_component:
                     ito = iq['to'].full
                 else:
@@ -669,7 +669,7 @@ class XEP_0030(BasePlugin):
             iq -- The incoming disco#items stanza.
         """
         if iq['type'] == 'get':
-            log.debug("Received disco items query from " + \
+            log.debug("Received disco items query from " +
                       "<%s> to <%s>.", iq['from'], iq['to'])
             items = self.api['get_items'](iq['to'],
                                           iq['disco_items']['node'],
@@ -683,7 +683,7 @@ class XEP_0030(BasePlugin):
                     iq.set_payload(items.xml)
                 iq.send()
         elif iq['type'] == 'result':
-            log.debug("Received disco items result from " + \
+            log.debug("Received disco items result from " +
                       "%s to %s.", iq['from'], iq['to'])
             self.xmpp.event('disco_items', iq)
 
@@ -704,15 +704,15 @@ class XEP_0030(BasePlugin):
         if not info['node']:
             if not info['identities']:
                 if self.xmpp.is_component:
-                    log.debug("No identity found for this entity. " + \
+                    log.debug("No identity found for this entity. " +
                               "Using default component identity.")
                     info.add_identity('component', 'generic')
                 else:
-                    log.debug("No identity found for this entity. " + \
+                    log.debug("No identity found for this entity. " +
                               "Using default client identity.")
                     info.add_identity('client', 'bot')
             if not info['features']:
-                log.debug("No features found for this entity. " + \
+                log.debug("No features found for this entity. " +
                           "Using default disco#info feature.")
                 info.add_feature(info.namespace)
         return result
