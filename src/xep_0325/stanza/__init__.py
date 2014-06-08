@@ -9,4 +9,3 @@
 """
 
 from sleekxmpp.plugins.xep_0325.stanza.control import *
-

@@ -12,21 +12,24 @@ from sleekxmpp import Iq, Message
 from sleekxmpp.xmlstream import register_stanza_plugin, ElementBase, ET, JID
 from re import match
 
+
 class Control(ElementBase):
+
     """ Placeholder for the namespace, not used as a stanza """
     namespace = 'urn:xmpp:iot:control'
     name = 'control'
     plugin_attrib = name
     interfaces = set(tuple())
 
+
 class ControlSet(ElementBase):
     namespace = 'urn:xmpp:iot:control'
     name = 'set'
     plugin_attrib = name
-    interfaces = set(['nodes','datas'])
+    interfaces = set(['nodes', 'datas'])
 
     def __init__(self, xml=None, parent=None):
-        ElementBase.__init__(self, xml, parent);
+        ElementBase.__init__(self, xml, parent)
         self._nodes = set()
         self._datas = set()
 
@@ -101,7 +104,8 @@ class ControlSet(ElementBase):
         self.del_nodes()
         for node in nodes:
             if isinstance(node, RequestNode):
-                self.add_node(node['nodeId'], node['sourceId'], node['cacheType'])
+                self.add_node(
+                    node['nodeId'], node['sourceId'], node['cacheType'])
             else:
                 nodeId, sourceId, cacheType = node
                 self.add_node(nodeId, sourceId, cacheType)
@@ -113,7 +117,6 @@ class ControlSet(ElementBase):
         for node in nodes:
             self.xml.remove(node.xml)
             self.iterables.remove(node)
-
 
     def add_data(self, name, typename, value):
         """
@@ -127,30 +130,30 @@ class ControlSet(ElementBase):
             value      -- The value of the data element
         """
         if name not in self._datas:
-            dataObj = None;
+            dataObj = None
             if typename == "boolean":
-                dataObj = BooleanParameter(parent=self);
+                dataObj = BooleanParameter(parent=self)
             elif typename == "color":
-                dataObj = ColorParameter(parent=self);
+                dataObj = ColorParameter(parent=self)
             elif typename == "string":
-                dataObj = StringParameter(parent=self);
+                dataObj = StringParameter(parent=self)
             elif typename == "date":
-                dataObj = DateParameter(parent=self);
+                dataObj = DateParameter(parent=self)
             elif typename == "dateTime":
-                dataObj = DateTimeParameter(parent=self);
+                dataObj = DateTimeParameter(parent=self)
             elif typename == "double":
-                dataObj = DoubleParameter(parent=self);
+                dataObj = DoubleParameter(parent=self)
             elif typename == "duration":
-                dataObj = DurationParameter(parent=self);
+                dataObj = DurationParameter(parent=self)
             elif typename == "int":
-                dataObj = IntParameter(parent=self);
+                dataObj = IntParameter(parent=self)
             elif typename == "long":
-                dataObj = LongParameter(parent=self);
+                dataObj = LongParameter(parent=self)
             elif typename == "time":
-                dataObj = TimeParameter(parent=self);
+                dataObj = TimeParameter(parent=self)
 
-            dataObj['name'] = name;
-            dataObj['value'] = value;
+            dataObj['name'] = name
+            dataObj['value'] = value
 
             self._datas.add(name)
             self.iterables.append(dataObj)
@@ -191,7 +194,8 @@ class ControlSet(ElementBase):
         """
         self.del_datas()
         for data in datas:
-            self.add_data(name=data['name'], typename=data._get_typename(), value=data['value'])
+            self.add_data(
+                name=data['name'], typename=data._get_typename(), value=data['value'])
 
     def del_datas(self):
         """Remove all data elements."""
@@ -203,11 +207,12 @@ class ControlSet(ElementBase):
 
 
 class RequestNode(ElementBase):
+
     """ Node element in a request """
     namespace = 'urn:xmpp:iot:control'
     name = 'node'
     plugin_attrib = name
-    interfaces = set(['nodeId','sourceId','cacheType'])
+    interfaces = set(['nodeId', 'sourceId', 'cacheType'])
 
 
 class ControlSetResponse(ElementBase):
@@ -217,7 +222,7 @@ class ControlSetResponse(ElementBase):
     interfaces = set(['responseCode'])
 
     def __init__(self, xml=None, parent=None):
-        ElementBase.__init__(self, xml, parent);
+        ElementBase.__init__(self, xml, parent)
         self._nodes = set()
         self._datas = set()
 
@@ -292,7 +297,8 @@ class ControlSetResponse(ElementBase):
         self.del_nodes()
         for node in nodes:
             if isinstance(node, RequestNode):
-                self.add_node(node['nodeId'], node['sourceId'], node['cacheType'])
+                self.add_node(
+                    node['nodeId'], node['sourceId'], node['cacheType'])
             else:
                 nodeId, sourceId, cacheType = node
                 self.add_node(nodeId, sourceId, cacheType)
@@ -305,7 +311,6 @@ class ControlSetResponse(ElementBase):
             self.xml.remove(node.xml)
             self.iterables.remove(node)
 
-
     def add_data(self, name):
         """
         Add a new ResponseParameter element. 
@@ -316,7 +321,7 @@ class ControlSetResponse(ElementBase):
         if name not in self._datas:
             self._datas.add(name)
             data = ResponseParameter(parent=self)
-            data['name'] = name;
+            data['name'] = name
             self.iterables.append(data)
             return data
         return None
@@ -329,7 +334,8 @@ class ControlSetResponse(ElementBase):
             name  -- The data element name to remove.
         """
         if name in self._datas:
-            datas = [i for i in self.iterables if isinstance(i, ResponseParameter)]
+            datas = [
+                i for i in self.iterables if isinstance(i, ResponseParameter)]
             for data in datas:
                 if data['name'] == name:
                     self.xml.remove(data.xml)
@@ -370,7 +376,7 @@ class Error(ElementBase):
     namespace = 'urn:xmpp:iot:control'
     name = 'error'
     plugin_attrib = name
-    interfaces = set(['var','text'])
+    interfaces = set(['var', 'text'])
 
     def get_text(self):
         """Return then contents inside the XML tag."""
@@ -383,25 +389,28 @@ class Error(ElementBase):
             value -- string
         """
 
-        self.xml.text = value;
+        self.xml.text = value
         return self
 
     def del_text(self):
         """Remove the contents inside the XML tag."""
         self.xml.text = ""
-        return self    
+        return self
+
 
 class ResponseParameter(ElementBase):
+
     """ 
     Parameter element in ControlSetResponse. 
-    """    
+    """
     namespace = 'urn:xmpp:iot:control'
     name = 'parameter'
     plugin_attrib = name
-    interfaces = set(['name']);
+    interfaces = set(['name'])
 
 
 class BaseParameter(ElementBase):
+
     """ 
     Parameter element in SetCommand. This is a base class,
     all instances of parameters added to SetCommand must be of types:
@@ -415,16 +424,18 @@ class BaseParameter(ElementBase):
         IntParameter
         LongParameter
         TimeParameter
-    """    
+    """
     namespace = 'urn:xmpp:iot:control'
     name = 'baseParameter'
     plugin_attrib = name
-    interfaces = set(['name','value']);
+    interfaces = set(['name', 'value'])
 
     def _get_typename(self):
-        return self.name;
+        return self.name
+
 
 class BooleanParameter(BaseParameter):
+
     """ 
     Field data of type boolean. 
     Note that the value is expressed as a string. 
@@ -432,7 +443,9 @@ class BooleanParameter(BaseParameter):
     name = 'boolean'
     plugin_attrib = name
 
+
 class ColorParameter(BaseParameter):
+
     """ 
     Field data of type color. 
     Note that the value is expressed as a string. 
@@ -440,14 +453,18 @@ class ColorParameter(BaseParameter):
     name = 'color'
     plugin_attrib = name
 
+
 class StringParameter(BaseParameter):
+
     """ 
     Field data of type string. 
     """
     name = 'string'
     plugin_attrib = name
 
+
 class DateParameter(BaseParameter):
+
     """ 
     Field data of type date. 
     Note that the value is expressed as a string. 
@@ -455,7 +472,9 @@ class DateParameter(BaseParameter):
     name = 'date'
     plugin_attrib = name
 
+
 class DateTimeParameter(BaseParameter):
+
     """ 
     Field data of type dateTime. 
     Note that the value is expressed as a string. 
@@ -463,7 +482,9 @@ class DateTimeParameter(BaseParameter):
     name = 'dateTime'
     plugin_attrib = name
 
+
 class DoubleParameter(BaseParameter):
+
     """ 
     Field data of type double. 
     Note that the value is expressed as a string. 
@@ -471,7 +492,9 @@ class DoubleParameter(BaseParameter):
     name = 'double'
     plugin_attrib = name
 
+
 class DurationParameter(BaseParameter):
+
     """ 
     Field data of type duration. 
     Note that the value is expressed as a string. 
@@ -479,7 +502,9 @@ class DurationParameter(BaseParameter):
     name = 'duration'
     plugin_attrib = name
 
+
 class IntParameter(BaseParameter):
+
     """ 
     Field data of type int. 
     Note that the value is expressed as a string. 
@@ -487,7 +512,9 @@ class IntParameter(BaseParameter):
     name = 'int'
     plugin_attrib = name
 
+
 class LongParameter(BaseParameter):
+
     """ 
     Field data of type long (64-bit int). 
     Note that the value is expressed as a string. 
@@ -495,7 +522,9 @@ class LongParameter(BaseParameter):
     name = 'long'
     plugin_attrib = name
 
+
 class TimeParameter(BaseParameter):
+
     """ 
     Field data of type time. 
     Note that the value is expressed as a string. 
@@ -523,4 +552,3 @@ register_stanza_plugin(Iq, ControlSetResponse)
 register_stanza_plugin(ControlSetResponse, Error)
 register_stanza_plugin(ControlSetResponse, RequestNode, iterable=True)
 register_stanza_plugin(ControlSetResponse, ResponseParameter, iterable=True)
-
