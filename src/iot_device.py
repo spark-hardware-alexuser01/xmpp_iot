@@ -14,6 +14,9 @@
 import logging
 import sleekxmpp
 import thermic
+import xep_0030
+import xep_0323
+import xep_0325
 from controls import Controls
 from sensors import Sensors
 
@@ -32,12 +35,13 @@ class IoTDevice(sleekxmpp.ClientXMPP):
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
         self.add_event_handler("session_start", self.session_start)
-        self.register_plugin('xep_0030')
+        self.register_plugin('xep_0030', module=xep_0030)
         self.register_plugin('xep_0004')  # Data Forms
         self.register_plugin('xep_0060')  # PubSub
+        self.register_plugin('xep_0115')  # Capabilities Plugin
         self.register_plugin('xep_0199')  # XMPP Ping
-        self.register_plugin('xep_0325')
-        self.register_plugin('xep_0323')
+        self.register_plugin('xep_0325', module=xep_0325)
+        self.register_plugin('xep_0323', module=xep_0323)
 
     def session_start(self, event):
         self.send_presence()
@@ -78,9 +82,6 @@ if __name__ == '__main__':
     xmpp['xep_0323'].register_node(nodeId=thermometer.nodeId,
                                    device=thermometer,
                                    commTimeout=10)
-    xmpp['xep_0030'].add_feature(feature='urn:xmpp:iot:sensordata',
-                                 node='foo',
-                                 jid=xmpp.boundjid.full)
     # begin stuff
     xmpp.connect()
     xmpp.process(block=True)
