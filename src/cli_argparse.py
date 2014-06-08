@@ -12,6 +12,9 @@ def gen_args(arg_parser=None):
     arg_parser.add_argument('-p', '--password', dest='password',
                             required=True, help='Password for used JID')
 
+    arg_parser.add_argument('-t', '--to_jid', dest='to_jid',
+                            help='Destination JID')
+
     # IoT configuration
     arg_parser.add_argument('-nc', '--nodeid-control', dest='nodeid_control',
                             help='NodeId to be used for Controller')
