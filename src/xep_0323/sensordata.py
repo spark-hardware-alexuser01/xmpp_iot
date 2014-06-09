@@ -192,6 +192,7 @@ class XEP_0323(BasePlugin):
         self.xmpp.remove_handler('Sensordata Event:Cancelled')
         self.xmpp.remove_handler('Sensordata Event:Fields')
         self.xmpp['xep_0030'].del_feature(feature=Sensordata.namespace)
+        # !!! Note: Need to delete items as well !!!
 
     # =================================================================
     # Sensor side (data provider) API
@@ -215,6 +216,7 @@ class XEP_0323(BasePlugin):
             sourceId    -- [optional] identifying the data source controlling the device
             cacheType   -- [optional] narrowing down the search to a specific kind of node
         """
+        # !!! Note: Add Input validation !!!
         self.nodes[nodeId] = {"device": device,
                               "commTimeout": commTimeout,
                               "sourceId": sourceId,
@@ -223,6 +225,7 @@ class XEP_0323(BasePlugin):
     def _set_authenticated(self, auth=''):
         """ Internal testing function """
         self.test_authenticated_from = auth
+        # !!! Note: This may need to be a call to provisioning? !!!
 
     def _handle_event_req(self, iq):
         """
@@ -249,6 +252,7 @@ class XEP_0323(BasePlugin):
         #     error_msg = "Access denied"
 
         # Nodes
+        # !!! Note: Turn into method() !!!
         process_nodes = []
         if len(iq['req']['nodes']) > 0:
             for n in iq['req']['nodes']:
@@ -260,6 +264,7 @@ class XEP_0323(BasePlugin):
             process_nodes = self.nodes.keys()
 
         # Fields - if we just find one we are happy, otherwise we reject
+        # !!! Note: Turn into method() !!!
         process_fields = []
         if len(iq['req']['fields']) > 0:
             found = False
@@ -276,6 +281,7 @@ class XEP_0323(BasePlugin):
         req_flags = iq['req']._get_flags()
 
         request_delay_sec = None
+        # !!! Note: Turn into method() !!!
         if 'when' in req_flags:
             # Timed request - requires datetime string in iso format
             # ex. 2013-04-05T15:00:03
@@ -297,6 +303,7 @@ class XEP_0323(BasePlugin):
                     error_msg = "Invalid datetime in 'when' flag, cannot set a time in the past. Current time: " + \
                         dtnow.isoformat()
 
+        # !!! Note: Turn into method() !!!
         if req_ok:
             session = self._new_session()
             self.sessions[session] = {
@@ -348,6 +355,9 @@ class XEP_0323(BasePlugin):
             flags           -- [optional] flags to pass to the devices, e.g. momentary
                                Formatted as a dictionary like { "flag name": "flag value" ... }
         """
+        # !!! Note: This helper function is missleading and needs to be
+        # modified throughout the plugin to handle threads and processing
+        # a or mutliple fields should be its own method
         for node in self.sessions[session]["node_list"]:
             self.sessions[session]["nodeDone"][node] = False
 
@@ -398,12 +408,16 @@ class XEP_0323(BasePlugin):
             flags           -- [optional] flags to pass to the devices, e.g. momentary
                                Formatted as a dictionary like { "flag name": "flag value" ... }
         """
+        # !!! Note: Should clarify from spec what this is doing below !!!
         msg = self.xmpp.Message()
         msg['from'] = self.sessions[session]['to']
         msg['to'] = self.sessions[session]['from']
         msg['started']['seqnr'] = self.sessions[session]['seqnr']
         msg.send()
 
+        # !!! Note: Fix for future proper method naming and structure of
+        # process fields and possibly threaded_node_request should have its
+        # own sequence of methods to be called. !!!
         if self.threaded:
             tr_req = Thread(
                 target=self._threaded_node_request, args=(session, process_fields, req_flags))
@@ -418,6 +432,7 @@ class XEP_0323(BasePlugin):
         Arguments:
             session         -- The request session id
         """
+        # !!! Note: Code below is ambigious. Clean up. !!!
         for n in self.sessions[session]["nodeDone"]:
             if not self.sessions[session]["nodeDone"][n]:
                 return False
@@ -456,11 +471,18 @@ class XEP_0323(BasePlugin):
             error_msg        -- [optional] Only applies when result == "error".
                                 Error details when a request failed.
         """
+        # !!! Note: If a cancelation can be received mid session on sending
+        # out then the method needs to process a field at a time and have a
+        # wrapper function that loops over field reply. There should be a lock
+        # for session while sending field information and only cancel
+        # threaded. If not threaded then check on each iteration of wrapper
+        # function. !!!
         if not session in self.sessions:
             # This can happend if a session was deleted, like in a
             # cancellation. Just drop the data.
             return
 
+        # !!! Note: Fix code below !!!
         if result == "error":
             self.sessions[session]["commTimers"][nodeId].cancel()
 
@@ -625,6 +647,8 @@ class XEP_0323(BasePlugin):
             "from": iq['from'], "to": iq['to'], "seqnr": seqnr, "callback": callback}
         iq.send(block=False)
 
+        # !!! Note: Why is the seqnr returned? Can it be used by the Client in
+        # for future requests. !!!
         return seqnr
 
     def cancel_request(self, session):
@@ -657,6 +681,7 @@ class XEP_0323(BasePlugin):
         """ Received Iq with accepted - request was accepted """
         seqnr = iq['accepted']['seqnr']
         result = "accepted"
+        # !!! Note: What is it meant by being queued? !!!
         if iq['accepted']['queued'] == 'true':
             result = "queued"
 
