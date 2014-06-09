@@ -26,16 +26,16 @@ log = logging.getLogger(__name__)
 class XEP_0325(BasePlugin):
 
     """
-    XEP-0325: IoT Control 
+    XEP-0325: IoT Control
 
 
-    Actuators are devices in sensor networks that can be controlled through 
-    the network and act with the outside world. In sensor networks and 
-    Internet of Things applications, actuators make it possible to automate 
-    real-world processes. 
-    This plugin implements a mechanism whereby actuators can be controlled 
-    in XMPP-based sensor networks, making it possible to integrate sensors 
-    and actuators of different brands, makes and models into larger 
+    Actuators are devices in sensor networks that can be controlled through
+    the network and act with the outside world. In sensor networks and
+    Internet of Things applications, actuators make it possible to automate
+    real-world processes.
+    This plugin implements a mechanism whereby actuators can be controlled
+    in XMPP-based sensor networks, making it possible to integrate sensors
+    and actuators of different brands, makes and models into larger
     Internet of Things applications.
 
     Also see <http://xmpp.org/extensions/xep-0325.html>
@@ -52,9 +52,9 @@ class XEP_0325(BasePlugin):
 
         Client side
         -----------
-        Control Event:SetResponse       -- Received a response to a 
+        Control Event:SetResponse       -- Received a response to a
                                            control request, type result
-        Control Event:SetResponseError  -- Received a response to a 
+        Control Event:SetResponseError  -- Received a response to a
                                            control request, type error
 
     Attributes:
@@ -65,7 +65,7 @@ class XEP_0325(BasePlugin):
                     relevant to a request's session. This dictionary is used
                     both by the client and sensor side. On client side, seqnr
                     is used as key, while on sensor side, a session_id is used
-                    as key. This ensures that the two will not collide, so 
+                    as key. This ensures that the two will not collide, so
                     one instance can be both client and sensor.
         Sensor side
         -----------
@@ -85,15 +85,15 @@ class XEP_0325(BasePlugin):
 
         Sensor side
         -----------
-        register_node     -- Register a sensor as available from this XMPP 
+        register_node     -- Register a sensor as available from this XMPP
                              instance.
 
         Client side
         -----------
-        set_request       -- Initiates a control request to modify data in  
+        set_request       -- Initiates a control request to modify data in
                              sensor(s). Non-blocking, a callback function will
                              be called when the sensor has responded.
-        set_command       -- Initiates a control command to modify data in  
+        set_command       -- Initiates a control command to modify data in
                              sensor(s). Non-blocking. The sensor(s) will not
                              respond regardless of the result of the command,
                              so no callback is made.
@@ -101,7 +101,7 @@ class XEP_0325(BasePlugin):
     """
 
     name = 'xep_0325'
-    description = 'XEP-0325 Internet of Things - Control'
+    description = 'XEP-0325: Internet of Things - Control'
     dependencies = set(['xep_0030'])
     stanza = stanza
 
@@ -168,10 +168,10 @@ class XEP_0325(BasePlugin):
 
     def register_node(self, nodeId, device, commTimeout, sourceId=None, cacheType=None):
         """
-        Register a sensor/device as available for control requests/commands 
-        through this XMPP instance. 
+        Register a sensor/device as available for control requests/commands
+        through this XMPP instance.
 
-        The device object may by any custom implementation to support 
+        The device object may by any custom implementation to support
         specific devices, but it must implement the functions:
           has_control_field
           set_control_fields
@@ -183,7 +183,7 @@ class XEP_0325(BasePlugin):
             commTimeout -- Time in seconds to wait between each callback from device during
                            a data readout. Float.
             sourceId    -- [optional] identifying the data source controlling the device
-            cacheType   -- [optional] narrowing down the search to a specific kind of node        
+            cacheType   -- [optional] narrowing down the search to a specific kind of node
         """
         self.nodes[nodeId] = {"device": device,
                               "commTimeout": commTimeout,
@@ -203,10 +203,10 @@ class XEP_0325(BasePlugin):
 
     def _handle_set_req(self, iq):
         """
-        Event handler for reception of an Iq with set req - this is a 
+        Event handler for reception of an Iq with set req - this is a
         control request.
 
-        Verifies that 
+        Verifies that
           - all the requested nodes are available
             (if no nodes are specified in the request, assume all nodes)
           - all the control fields are available from all requested nodes
@@ -214,7 +214,7 @@ class XEP_0325(BasePlugin):
 
         If the request passes verification, the control request is passed
         to the devices (in a separate thread).
-        If the verification fails, a setResponse with error indication 
+        If the verification fails, a setResponse with error indication
         is sent.
         """
 
@@ -288,10 +288,10 @@ class XEP_0325(BasePlugin):
 
     def _handle_direct_set(self, msg):
         """
-        Event handler for reception of a Message with set command - this is a 
+        Event handler for reception of a Message with set command - this is a
         direct control command.
 
-        Verifies that 
+        Verifies that
           - all the requested nodes are available
             (if no nodes are specified in the request, assume all nodes)
           - all the control fields are available from all requested nodes
@@ -346,7 +346,7 @@ class XEP_0325(BasePlugin):
                 self._threaded_node_request(session, process_fields)
 
     def _threaded_node_request(self, session, process_fields):
-        """ 
+        """
         Helper function to handle the device control in a separate thread.
 
         Arguments:
@@ -366,11 +366,11 @@ class XEP_0325(BasePlugin):
                 process_fields, session=session, callback=self._device_set_command_callback)
 
     def _event_comm_timeout(self, session, nodeId):
-        """ 
+        """
         Triggered if any of the control operations timeout.
         Stop communicating with the failing device.
-        If the control command was an Iq request, sends a failure 
-        message back to the client. 
+        If the control command was an Iq request, sends a failure
+        message back to the client.
 
         Arguments:
             session         -- The request session id
@@ -399,7 +399,7 @@ class XEP_0325(BasePlugin):
             del self.sessions[session]
 
     def _all_nodes_done(self, session):
-        """ 
+        """
         Checks wheter all devices are done replying to the control command.
 
         Arguments:
@@ -411,10 +411,10 @@ class XEP_0325(BasePlugin):
         return True
 
     def _device_set_command_callback(self, session, nodeId, result, error_field=None, error_msg=None):
-        """ 
-        Callback function called by the devices when the control command is 
+        """
+        Callback function called by the devices when the control command is
         complete or failed.
-        If needed, composes a message with the result and sends it back to the 
+        If needed, composes a message with the result and sends it back to the
         client.
 
         Arguments:
@@ -423,7 +423,7 @@ class XEP_0325(BasePlugin):
             result          -- The current result status of the control command. Valid values are:
                                "error"  - Set fields failed.
                                "ok"     - All fields were set.
-            error_field      -- [optional] Only applies when result == "error" 
+            error_field      -- [optional] Only applies when result == "error"
                                 The field name that failed (usually means it is missing)
             error_msg        -- [optional] Only applies when result == "error".
                                 Error details when a request failed.
@@ -479,16 +479,16 @@ class XEP_0325(BasePlugin):
     # Client side (data controller) API
 
     def set_request(self, from_jid, to_jid, callback, fields, nodeIds=None):
-        """ 
+        """
         Called on the client side to initiade a control request.
         Composes a message with the request and sends it to the device(s).
-        Does not block, the callback will be called when the device(s) 
+        Does not block, the callback will be called when the device(s)
         has responded.
 
         Arguments:
             from_jid        -- The jid of the requester
             to_jid          -- The jid of the device(s)
-            callback        -- The callback function to call when data is availble. 
+            callback        -- The callback function to call when data is availble.
 
                             The callback function must support the following arguments:
 
@@ -500,20 +500,20 @@ class XEP_0325(BasePlugin):
                                "Locked"         - Field(s) is locked and cannot
                                                   be changed at the moment.
                                "NotImplemented" - Request feature not implemented.
-                               "FormError"      - Error while setting with 
+                               "FormError"      - Error while setting with
                                                   a form (not implemented).
-                               "OtherError"     - Indicates other types of 
-                                                  errors, such as timeout. 
+                               "OtherError"     - Indicates other types of
+                                                  errors, such as timeout.
                                                   Details in the error_msg.
 
 
-                nodeId      -- [optional] Only applicable when result == "error" 
-                               List of node Ids of failing device(s). 
+                nodeId      -- [optional] Only applicable when result == "error"
+                               List of node Ids of failing device(s).
 
-                fields      -- [optional] Only applicable when result == "error" 
+                fields      -- [optional] Only applicable when result == "error"
                                List of fields that failed.[optional] Mandatory when result == "rejected" or "failure".
 
-                error_msg   -- Details about why the request failed. 
+                error_msg   -- Details about why the request failed.
 
             fields          -- Fields to set. List of tuple format: (name, typename, value).
             nodeIds         -- [optional] Limits the request to the node Ids in this list.
@@ -536,7 +536,7 @@ class XEP_0325(BasePlugin):
         iq.send(block=False)
 
     def set_command(self, from_jid, to_jid, fields, nodeIds=None):
-        """ 
+        """
         Called on the client side to initiade a control command.
         Composes a message with the set commandand sends it to the device(s).
         Does not block. Device(s) will not respond, regardless of result.

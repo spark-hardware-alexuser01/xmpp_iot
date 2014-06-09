@@ -42,6 +42,7 @@ class XEP_0323(BasePlugin):
     Configuration Values:
         threaded -- Indicates if communication with sensors should be threaded.
                     Defaults to True.
+                    !!!NOTE: If not threaded then sensors won't send data.!!!
 
     Events:
         Sensor side
@@ -101,7 +102,7 @@ class XEP_0323(BasePlugin):
     """
 
     name = 'xep_0323'
-    description = 'XEP-0323 Internet of Things - Sensor Data'
+    description = 'XEP-0323: Internet of Things - Sensor Data'
     dependencies = set(['xep_0030'])
     stanza = stanza
 
