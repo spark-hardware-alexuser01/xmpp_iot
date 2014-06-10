@@ -199,20 +199,16 @@ class DownloadPrivilegesResponse(ElementBase):
         self._excludes = set()
         self._privileges = set()
 
-    def setup(self, xml=None):
-        """
-        """
-
     def add_privilege(self, privilegeId, privilege):
-        self._privileges[privilegeId] = privilege
+        # self._privileges[privilegeId] = privilege
         if privilege == 'include':
             include_privilege = IncludePrivilege(parent=self)
-            include_privilege['privilegeId'] = privilegeId
+            include_privilege['id'] = privilegeId
             self.iterables.append(include_privilege)
             return include_privilege
         elif privilege == 'exclude':
             exclude_privilege = ExcludePrivilege(parent=self)
-            exclude_privilege['privilegeId'] = privilegeId
+            exclude_privilege['id'] = privilegeId
             self.iterables.append(exclude_privilege)
             return exclude_privilege
         else:
