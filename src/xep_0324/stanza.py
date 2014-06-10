@@ -91,6 +91,13 @@ class ClearCache(ElementBase):
     plugin_attrib = name
 
 
+class Credentials(ElementBase):
+    # TODO comment about fields, context, & implementation
+    name = 'credentials'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['type', 'value'])
+
+
 class CanAccess(ElementBase):
     name = 'canAccess'
     namespace = 'urn:xmpp:iot:provisioning'
@@ -233,13 +240,6 @@ class ExcludePrivilege(ElementBase):
     name = 'exclude'
     interfaces = set(['id'])
     plugin_attrib = name
-
-
-class Credentials(ElementBase):
-    # TODO comment about fields, context, & implementation
-    name = 'credentials'
-    namespace = 'urn:xmpp:iot:provisioning'
-    interfaces = set(['type', 'value'])
 
 
 register_stanza_plugin(Iq, CanAccess)
