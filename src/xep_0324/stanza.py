@@ -113,7 +113,7 @@ class CanAccess(ElementBase):
         self._credentials = set([credential['type']
                                  for credential in self['credentials']])
 
-    def add_credential(self, name, typename, value):
+    def add_credential(self, typename, value):
         """
         Add a new credential to CanAccess request.
 
@@ -123,17 +123,35 @@ class CanAccess(ElementBase):
             value -- the value for the credential
         """
 
-        if name not in self._credentials:
+        if typename not in self._credentials:
             credential = Credentials()
 
-            credential['name'] = name
+            credential['type'] = typename
             credential['value'] = value
 
-            self._credentials.add(name)
+            self._credentials.add(typename)
             self.iterables.append(credential)
             return credential
 
         return None
+
+    def del_credential(self, typename):
+        pass
+
+    def set_credential(self, typename):
+        pass
+
+    def get_credential(self, typename):
+        pass
+
+    def add_credentials(self, credentials):
+        pass
+
+    def del_credentials(self):
+        pass
+
+    def set_credentials(self):
+        pass
 
     def get_credentials(self):
         credentials = []
