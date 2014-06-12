@@ -83,7 +83,7 @@ class TestProvisioningStanzas(SleekTest):
             </message>
             """)
 
-    def testCreateCanAccess(self):
+    def testCreateCanRead(self):
         iq = self.Iq()
 
         iq['type'] = 'get'
