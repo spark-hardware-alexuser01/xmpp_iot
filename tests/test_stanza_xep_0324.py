@@ -17,6 +17,7 @@ class TestProvisioningStanzas(SleekTest):
         register_stanza_plugin(Message, xep_0324.Unfriend)
         register_stanza_plugin(Message, xep_0324.Friend)
         register_stanza_plugin(Iq, xep_0324.CanRead)
+        register_stanza_plugin(Iq, xep_0324.CanReadResponse)
 
     def testCreateIsFriend(self):
         iq = self.Iq()
@@ -102,6 +103,27 @@ class TestProvisioningStanzas(SleekTest):
                 to='provisioning.clayster.com'
                 id='16'>
                 <canRead xmlns='urn:xmpp:iot:provisioning' jid='master@clayster.com' momentary='true' serviceToken='SERVICETOKEN1' userToken='USERTOKEN1'/>
+            </iq>
+            """)
+
+    def testCreateCanReadResponse(self):
+        iq = self.Iq()
+
+        iq['type'] = 'result'
+        iq['from'] = 'provisioning.clayster.com'
+        iq['to'] = 'device@clayster.com/device'
+        iq['id'] = str(8)
+
+        iq['canReadResponse']['jid'] = 'master@clayster.com'
+        iq['canReadResponse']['momentary'] = 'true'
+        iq['canReadResponse']['result'] = 'true'
+
+        self.check(iq, """
+            <iq type='result'
+                from='provisioning.clayster.com'
+                to='device@clayster.com/device'
+                id='8'>
+                <canReadResponse xmlns='urn:xmpp:iot:provisioning' jid='master@clayster.com' momentary='true' result='true'/>
             </iq>
             """)
 
