@@ -21,10 +21,30 @@ class Provisioning(ElementBase):
 """skipped 3.1: Delegating Trust, seemed complicated"""
 
 
-class FriendRequest(ElementBase):
+class IsFriend(ElementBase):
     name = 'isFriend'
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(['jid'])
+    plugin_attrib = name
+
+
+class IsFriendResponse(ElementBase):
+    """
+    A response to a friend request with the isFriendElement
+        Attributes:
+            jid : required/string: the jid being requested if is a friend
+            restult: required:boolean if requested jid is a friend to the
+                sender
+            secondaryTrustAllowed: boolean/optional (default: False):
+                if secondary trust is allowed
+                (i.e. True) this means that the device knows it has the right
+                to add its own friends or add secondary trust relationships
+                Note: the spec doesn't clarify if this applies to device
+                sending the request or the jid being requested.
+    """
+    name = 'isFriendResponse'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['jid', 'result', 'secondaryTrustAllowed'])
     plugin_attrib = name
 
 
@@ -41,11 +61,13 @@ class RecommendFriend(ElementBase):
     interfaces = set(['jid'])
     plugin_attrib = name
 
-"""I did not do rejecting read-outs because it was an
-   extension of sensor data, however I studied it for
-   a while, and realized I have no idea how to do the
-   nodes part, saw some examples of how it might
-   be done through sensor data"""
+    """
+    I did not do rejecting read-outs because it was an
+    extension of sensor data, however I studied it for
+    a while, and realized I have no idea how to do the
+    nodes part, saw some examples of how it might
+    be done through sensor data
+    """
 
 
 class GetToken(ElementBase):
