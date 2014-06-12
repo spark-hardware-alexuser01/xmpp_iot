@@ -15,6 +15,7 @@ class TestProvisioningStanzas(SleekTest):
         register_stanza_plugin(Iq, xep_0324.IsFriend)
         register_stanza_plugin(Iq, xep_0324.IsFriendResponse)
         register_stanza_plugin(Message, xep_0324.Unfriend)
+        register_stanza_plugin(Message, xep_0324.Friend)
 
     def testCreateIsFriend(self):
         iq = self.Iq()
@@ -64,6 +65,20 @@ class TestProvisioningStanzas(SleekTest):
             <message from='provisioning.clayster.com'
                 to='device@clayster.com'>
                 <unfriend xmlns='urn:xmpp:iot:provisioning' jid='client2@clayster.com'/>
+            </message>
+            """)
+
+    def testCreateFriend(self):
+        msg = self.Message()
+
+        msg['from'] = 'provisioning.clayster.com'
+        msg['to'] = 'device@clayster.com'
+        msg['friend']['jid'] = 'client2@clayster.com'
+
+        self.check(msg, """
+            <message from='provisioning.clayster.com'
+                to='device@clayster.com'>
+                <friend xmlns='urn:xmpp:iot:provisioning' jid='client2@clayster.com'/>
             </message>
             """)
     # def testDownloadPrivilegesResponse(self):
