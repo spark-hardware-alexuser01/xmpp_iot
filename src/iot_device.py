@@ -79,9 +79,9 @@ if __name__ == '__main__':
     thermometer = Thermometer('thermometer')
     thermometer._add_field(name="temperature", typename="numeric", unit="C")
     thermometer.refresh({})
-    xmpp['xep_0323'].register_node(nodeId=thermometer.nodeId,
-                                   device=thermometer,
-                                   commTimeout=10)
+    xmpp['xep_0323'].register_node(thermometer.nodeId,
+                                   thermometer,
+                                   10)
     # begin stuff
     xmpp.connect()
     xmpp.process(block=True)
