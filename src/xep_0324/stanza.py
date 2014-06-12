@@ -109,8 +109,22 @@ class CanControl(ElementBase):
     plugin_attrib = name
 
 
+class CanControlResponse(ElementBase):
+    name = 'canControlResponse'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['', 'serviceToken', 'userToken'])
+    plugin_attrib = name
+
+
 class ClearCache(ElementBase):
     name = 'clearCache'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(tuple())
+    plugin_attrib = name
+
+
+class ClearCacheResponse(ElementBase):
+    name = 'clearCacheResponse'
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(tuple())
     plugin_attrib = name
