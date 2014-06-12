@@ -22,7 +22,7 @@ class TestProvisioningStanzas(SleekTest):
         iq['type'] = 'get'
         iq['from'] = 'device@clayster.com/device'
         iq['to'] = 'provisioning.clayster.com'
-        iq['id'] = '9'
+        iq['id'] = str(9)
         iq['isFriend']['jid'] = 'client1@clayster.com'
 
         self.check(iq, """
@@ -31,6 +31,25 @@ class TestProvisioningStanzas(SleekTest):
                 to='provisioning.clayster.com'
                 id='9'>
                 <isFriend xmlns='urn:xmpp:iot:provisioning' jid='client1@clayster.com'/>
+            </iq>
+            """)
+
+    def testCreateIsFriendResponse(self):
+        iq = self.Iq()
+
+        iq['type'] = 'result'
+        iq['from'] = 'provisioning.clayster.com'
+        iq['to'] = 'device@clayster.com/device'
+        iq['id'] = str(9)
+        iq['isFriendResponse']['jid'] = 'client1@clayster.com'
+        iq['isFriendResponse']['result'] = 'true'
+
+        self.check(iq, """
+            <iq type='result'
+                from='provisioning.clayster.com'
+                to='device@clayster.com/device'
+                id='9'>
+                <isFriendResponse xmlns='urn:xmpp:iot:provisioning' jid='client1@clayster.com' result='true'/>
             </iq>
             """)
 
