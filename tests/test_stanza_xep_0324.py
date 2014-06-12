@@ -1,10 +1,9 @@
-from sleekxmpp import Iq
+from sleekxmpp import Iq, Message
 from sleekxmpp.test import SleekTest
 from sleekxmpp.xmlstream import register_stanza_plugin
 
 import src.xep_0324.stanza as xep_0324
 
-namespace = 'sn'
 
 class TestProvisioningStanzas(SleekTest):
     """
@@ -15,6 +14,7 @@ class TestProvisioningStanzas(SleekTest):
     def setUp(self):
         register_stanza_plugin(Iq, xep_0324.IsFriend)
         register_stanza_plugin(Iq, xep_0324.IsFriendResponse)
+        register_stanza_plugin(Message, xep_0324.Unfriend)
 
     def testCreateIsFriend(self):
         iq = self.Iq()
@@ -53,6 +53,19 @@ class TestProvisioningStanzas(SleekTest):
             </iq>
             """)
 
+    def testCreateUnfriend(self):
+        msg = self.Message()
+
+        msg['from'] = 'provisioning.clayster.com'
+        msg['to'] = 'device@clayster.com'
+        msg['unfriend']['jid'] = 'client2@clayster.com'
+
+        self.check(msg, """
+            <message from='provisioning.clayster.com'
+                to='device@clayster.com'>
+                <unfriend xmlns='urn:xmpp:iot:provisioning' jid='client2@clayster.com'/>
+            </message>
+            """)
     # def testDownloadPrivilegesResponse(self):
     #     iq = self.Iq()
     #     iq['type'] = 'result'
