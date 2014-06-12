@@ -55,19 +55,15 @@ class Unfriend(ElementBase):
     plugin_attrib = name
 
 
-class RecommendFriend(ElementBase):
+class Friend(ElementBase):
+    """
+    Friend stanza is for a provisioning server to recommend a Friend to
+    a connected device.
+    """
     name = 'friend'
     namespace = 'urn:xmpp:iot:provisioning'
     interfaces = set(['jid'])
     plugin_attrib = name
-
-    """
-    I did not do rejecting read-outs because it was an
-    extension of sensor data, however I studied it for
-    a while, and realized I have no idea how to do the
-    nodes part, saw some examples of how it might
-    be done through sensor data
-    """
 
 
 class GetToken(ElementBase):
