@@ -94,6 +94,13 @@ class CanRead(ElementBase):
     plugin_attrib = name
 
 
+class CanReadResponse(ElementBase):
+    name = 'canReadResponse'
+    namespace = 'urn:xmpp:iot:provisioning'
+    interfaces = set(['jid', 'serviceToken', 'userToken', 'momentary', 'result'])
+    plugin_attrib = name
+
+
 # I don't think canControl has a momentary value in the interfaces set...
 class CanControl(ElementBase):
     name = 'canControl'
