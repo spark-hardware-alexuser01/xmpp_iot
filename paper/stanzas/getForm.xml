@@ -1,52 +1,52 @@
 <iq type='get'
-       from='master@clayster.com/amr'
-       to='spotlight@clayster.com'
-       id='12'>
-      <getForm xmlns='urn:xmpp:iot:control' xml:lang='en'/>
-   </iq>
-   
-   <iq type='result'
-       from='spotlight@clayster.com'
-       to='master@clayster.com/amr'
-       id='12'>
-       <x type='form' 
-          xmlns='jabber:x:data' 
-          xmlns:xdv='http://jabber.org/protocol/xdata-validate'
-          xmlns:xdl:='http://jabber.org/protocol/xdata-layout'
-          xmlns:xdd:='urn:xmpp:xdata:dynamic'>
-           <title>Spotlight</title>
-           <xdl:page label='Output'>
-               <xdl:fieldref var='MainSwitch'/>
-           </xdl:page>
-           <xdl:page label='Direction'>
-               <xdl:fieldref var='HorizontalAngle'/>
-               <xdl:fieldref var='ElevationAngle'/>
-           </xdl:page>
-           <field var='xdd session' type='hidden'>
-               <value>325ED0F3-9A9A-45A4-9634-4E0D41C5EA06</value>
-           </field>
-           <field var='MainSwitch' type='boolean' label='Main switch'>
-               <desc>If the spotlight is turned on or off.</desc>
-               <value>true</value>
-               <xdd:notSame/>
-           </field>
-           <field var='HorizontalAngle' type='text-single' label='Horizontal angle:'>
-               <desc>Horizontal angle of the spotlight.</desc>
-               <value>0</value>
-               <xdv:validate datatype='xs:double'>
-                   <xdv:range min='-180' max='180'/>
-               </xdv:validate>
-               <xdd:notSame/>
-               <parameterGroup xmlns='urn:xmpp:iot:control' name='direction'/>
-           </field>
-           <field var='ElevationAngle' type='text-single' label='Elevation angle:'>
-               <desc>Elevation angle of the spotlight.</desc>
-               <value>0</value>
-               <xdv:validate datatype='xs:double'>
-                   <xdv:range min='-90' max='90'/>
-               </xdv:validate>
-               <xdd:notSame/>
-               <parameterGroup xmlns='urn:xmpp:iot:control' name='direction'/>
-           </field>
-       </x>
-   </iq>
+   from='master@clayster.com/amr'
+   to='spotlight@clayster.com'
+   id='12'>
+  <getForm xmlns='urn:xmpp:iot:control' xml:lang='en'/>
+</iq>
+
+<iq type='result'
+   from='spotlight@clayster.com'
+   to='master@clayster.com/amr'
+   id='12'>
+   <x type='form'
+      xmlns='jabber:x:data'
+      xmlns:xdv='http://jabber.org/protocol/xdata-validate'
+      xmlns:xdl:='http://jabber.org/protocol/xdata-layout'
+      xmlns:xdd:='urn:xmpp:xdata:dynamic'>
+       <title>Spotlight</title>
+       <xdl:page label='Output'>
+           <xdl:fieldref var='MainSwitch'/>
+       </xdl:page>
+       <xdl:page label='Direction'>
+           <xdl:fieldref var='HorizontalAngle'/>
+           <xdl:fieldref var='ElevationAngle'/>
+       </xdl:page>
+       <field var='xdd session' type='hidden'>
+           <value>325ED0F3-9A9A-45A4-9634-4E0D41C5EA06</value>
+       </field>
+       <field var='MainSwitch' type='boolean' label='Main switch'>
+           <desc>If the spotlight is turned on or off.</desc>
+           <value>true</value>
+           <xdd:notSame/>
+       </field>
+       <field var='HorizontalAngle' type='text-single' label='Horizontal angle:'>
+           <desc>Horizontal angle of the spotlight.</desc>
+           <value>0</value>
+           <xdv:validate datatype='xs:double'>
+               <xdv:range min='-180' max='180'/>
+           </xdv:validate>
+           <xdd:notSame/>
+           <parameterGroup xmlns='urn:xmpp:iot:control' name='direction'/>
+       </field>
+       <field var='ElevationAngle' type='text-single' label='Elevation angle:'>
+           <desc>Elevation angle of the spotlight.</desc>
+           <value>0</value>
+           <xdv:validate datatype='xs:double'>
+               <xdv:range min='-90' max='90'/>
+           </xdv:validate>
+           <xdd:notSame/>
+           <parameterGroup xmlns='urn:xmpp:iot:control' name='direction'/>
+       </field>
+   </x>
+</iq>
