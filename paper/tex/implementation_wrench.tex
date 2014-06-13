@@ -40,8 +40,8 @@ He was able to help us discover what our problem was. We doing a user error. The
 method definition in python specified that the destination jid, source jid, and
 asynchronous method callback be put in that order. However we put them in that
 order with the pythons definition of position independent parameters (e.g.
-\texttt{request\_sensordata(from\_jid= ``jid1'', to\_jid= ``jid2'',
-callback=req\_callback})
+request\_sensordata(from\_jid= ``jid1'', to\_jid= ``jid2'',
+callback=req\_callback)
 however it is just supposed to be in that order but without the positional
 independent parameter definitions (e.g. request\_sensordata( ``jid1'',  ``jid2'',
 req\_callback). This fixed our problem and allowed us to begin development on
