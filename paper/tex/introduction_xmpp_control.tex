@@ -2,12 +2,14 @@ The Control XEP is a protocol outlining how to set the controllable parameters
 of a node [footnote explaining a node]. The main goal of the Control XEP is 
 to make implementation of data setting commands as simple as possible, which is 
 fitting for IoT due to the large diversity of the objects that will implement 
-the control protocol.\n
+the control protocol.
 
 XMPP set commands, specifically in the Control XEP, are minimal in implementation. 
 The only required fields are the recipient and sender, XML namespace, the name 
 and value of the control parameter, and its data type. The XML namespace, line 
 3 in Figure 1.1 below, exists to define which protocol is being used to 
 exchange data. A sample message from a server to a device is provided below in 
-Figure 1.1.\n
+Figure 1.1.
+
+\lstinputlisting{stanzas/messageStanza.xml}
 
