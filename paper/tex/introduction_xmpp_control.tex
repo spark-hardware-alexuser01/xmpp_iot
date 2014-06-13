@@ -11,8 +11,8 @@ and value of the control parameter, and its data type. The XML namespace, line
 exchange data. A sample message from a server to a device is provided below in 
 Figure 1.\\*
 \begin{figure}
+\lstinputlisting[frame=single, breaklines=true, numbers=left, stepnumber=1]{stanzas/messageStanza.xml}
 \caption{A simple Control XEP message stanza}
-\lstinputlisting{stanzas/messageStanza.xml}
 \end{figure}
 
 If an acknowledgement is needed, an iq (info/query) stanza is used instead for more structured exchange of data\cite{rfc6120}. Iq stanzas require a response to any request.\\
