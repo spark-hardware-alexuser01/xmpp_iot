@@ -1,0 +1,11 @@
+XEPs Control and Sensor were already partially implemented as plugins of the
+SleekXMPP library, so we decided to build off of that existing code and to start
+developing Provisioning. The existing XEP partial implementations provided us
+with a helpful reference when we began to develop Provisioning.
+
+While both the Control and Sensor XEP implementations in SleekXMPP have minimal
+functionality, they are both still incomplete. Neither implementation is pep8
+compliant, both are confusing for new developers of XMPP IoT, and Control
+doesn’t support get forms (See [SECTION] about getforms). We performed a
+syntactic cleanup and some slight refactoring of the SleekXMPP code to reduce
+these problems.

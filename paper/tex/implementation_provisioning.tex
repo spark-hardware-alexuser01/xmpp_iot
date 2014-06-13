@@ -1,0 +1,16 @@
+Currently all of the stanza data scructures needed for the Provisioning extended
+protocol are in place. We are currently developing what we can of the mechanics
+of getting a client and server component of Provisioning to work.
+
+Since there is no XMPP server developed on top of SleekXMPP we had to go with
+another server to connect via a server component gateway. This allows us to
+continue to develop a functional Provisioning server without having to develop
+in any given server’s native language. We decided to be testing and attaching
+our Provisioning server component to a Podos server.
+
+What still needs to be done is developing a functional simulated devices
+utilizing the Provisioning protocol and the Server component that the devices
+will be communicating with to handle the provisioning protocol. Such things
+apart of the needed component implementations is attaching the Sleek code to
+maintain its state either in memory or in a database for future scalability.
+This would maintain friendships, tokens, certificates, etc.
