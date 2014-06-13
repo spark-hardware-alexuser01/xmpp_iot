@@ -1,0 +1,6 @@
+<mesage from='master@clayster.com/amr'
+            to='digital.output@clayster.com'>
+      <set xmlns='urn:xmpp:iot:control'>
+         <boolean name='Output' value='true'/>
+      </set>
+  </message>
