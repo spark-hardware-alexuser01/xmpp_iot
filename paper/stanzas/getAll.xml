@@ -1,0 +1,6 @@
+<iq type=`get`
+       from=`client@clayster.com/amr`
+       to=`device@clayster.com`
+       id=`S0004`>
+      <req xmlns=`urn:xmpp:iot:sensordata` seqnr=`4` all=`true`/>
+   </iq>
