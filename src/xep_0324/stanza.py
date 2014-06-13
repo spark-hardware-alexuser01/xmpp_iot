@@ -90,7 +90,7 @@ class GetTokenChallenge(ElementBase):
 class CanRead(ElementBase):
     name = 'canRead'
     namespace = 'urn:xmpp:iot:provisioning'
-    interfaces = set(['jid', 'serviceToken', 'userToken', 'momentary'])
+    interfaces = set(['jid', 'serviceToken', 'userToken', 'deviceToken', 'momentary'])
     plugin_attrib = name
 
 
@@ -101,18 +101,38 @@ class CanReadResponse(ElementBase):
     plugin_attrib = name
 
 
-# I don't think canControl has a momentary value in the interfaces set...
-class CanControl(ElementBase):
+class CanControlBase(ElementBase):
+    interfaces = set(['jid'])
+
+    def __init__(self, xml=None, parent=None):
+        ElementBase.__init__(self, xml, parent)
+        self._nodes = dict()
+        self._parameter = dict()
+
+    def add_node(self):
+        pass
+
+    def del_node(self):
+        pass
+
+    def add_parameter(self):
+        pass
+
+    def del_parameter(self):
+        pass
+
+
+class CanControl(CanControlBase):
     name = 'canControl'
     namespace = 'urn:xmpp:iot:provisioning'
-    interfaces = set(['jid', 'serviceToken', 'userToken'])
+    interfaces = set(['jid', 'serviceToken', 'userToken', 'deviceToken'])
     plugin_attrib = name
 
 
-class CanControlResponse(ElementBase):
+class CanControlResponse(CanControlBase):
     name = 'canControlResponse'
     namespace = 'urn:xmpp:iot:provisioning'
-    interfaces = set(['', 'serviceToken', 'userToken'])
+    interfaces = set(['serviceToken', 'userToken', 'deviceToken', 'result'])
     plugin_attrib = name
 
 
