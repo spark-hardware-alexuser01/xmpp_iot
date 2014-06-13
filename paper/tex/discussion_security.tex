@@ -1,0 +1,33 @@
+Approach taken as a protocol should be one of that assume devices, services, and
+servers not only exist in an unreliable network but an actively malicious one.
+Also it may be arguable that there may be no IoT protocol like IPv4 there is for
+the Internet. It may from the beginning need to find a commonality among current
+protocols to see what minimum features exist amongst all of them and not only
+try to provide the best protocol can for their own purposes but assume that
+gateways will be able to exist or devices may need to speak multiple IoT
+protocols to function in the world around them. 
+
+Provisioning chain of trust. Strange that a spec doesn`t clarify that a device
+or user can send an unfriend request. The provisioning server is the only one
+who makes that decision.
+
+Provisioning The protocol currently specifies that if there are multiple
+provisioning servers on the that are returning access rights (e.g.  CanRead,
+CanAccess, CanControl), a device is supposed to apply a Union operation to these
+provisioning server responses. This results in a design of potential fail
+opening.
+
+Example then is if a company has multiple of provisioning servers for
+redundancy and handling larger networks. It doesn`t take the effort of
+compromising all of the provisioning servers to abuse the rights of a
+device. If you have control of one provisioning server you can override what
+may be the valid access controls of all of the other provisioning servers.
+
+Provisioning Authentication. One weakness in authentication of devices,
+apart of the XMPP IoT network, is that they only send requests to a service
+requesting tokens, which is then delegated between the service and
+provisioning server to update or manage the access and controls. The
+authentication relies on the SASL and TLS authentication below it and
+doesn`t really provide any new level of authentication on the overly IoT
+network. It seems to be unclear if the SASL and TLS are sufficient
+authentication for devices on a network.`

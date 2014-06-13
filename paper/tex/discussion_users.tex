@@ -1,0 +1,15 @@
+Having different protocols for setting and getting has a negative effect on the
+user due to one particular informational flag that is settable in Sensor Data.
+The `controllable` flag, which is optionally set in Sensor Data, indicates
+whether a field is settable or not. However, being settable means that the
+Control XEP is able to set it, which is defined by behavior in the Control
+protocol. So a programmer could make a mistake and mark a certain field as
+`settable` through the Sensor Data protocol, when it all reality Control cannot
+even touch it. This could cause lots of confusion for a user that wishes to view
+control parameters through the read command of Sensor Data rather than the
+getForm command of Control.
+
+Provisioning only has a notion of access rights for individual friends and
+doesn't allow for groupings. This prevents group properties or means of group
+relationships which may result in more work for managing trust relationships for
+end users than effectively necessary.

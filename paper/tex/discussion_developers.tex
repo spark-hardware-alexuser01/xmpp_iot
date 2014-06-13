@@ -1,0 +1,23 @@
+Having different protocols for setting a node`s values and getting a node`s
+values can prove to be frustrating for developers. The Control XEP seems to be
+the perfect protocol to implement a read request in. Instead, the developer is
+forced to support the Sensor Data XEP in order to support readout of meter
+values.
+
+Worse yet, the protocols have differences in their view of data types. Sensor
+Data has a numeric data type, which is a number with a precision integer and
+unit. Control has no concept of the numeric data type, and so the programmer is
+forced to implement a default conversion in the sensor if they want the client
+to be able to set the numeric data type.
+
+The worst asset to this split up of Control and Sensor data is the
+`controllable' flag, which can cause confusion for a user as well, outlined in
+the user section below. However, the controllable flag could be turned into a
+positive if it were mandatory.
+
+Our solution to the problem of splitting up data fields is that upon giving a
+node a data field, the protocol should mandate that the user specify whether the
+field is controllable or not through the Sensor Data protocol. That way, Sensor
+Data would know the difference between the control parameters (settable) and
+fields (only viewable). Essentially, all Sensor Data would need from there is a
+set method and Control would cease to serve a purpose.

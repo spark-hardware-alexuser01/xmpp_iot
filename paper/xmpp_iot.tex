@@ -3,6 +3,7 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{appendix}
 
 \begin{document}
 
@@ -80,30 +81,43 @@ Abstract filler
 
 \section{Discussion}
 
+\input{tex/discussion.tex}
+
 \subsection{Overall}
+
 
 \subsection{Developers}
 
+\input{tex/discussion_developers.tex}
+
 \subsection{Users}
+
+\input{tex/discussion_users.tex}
 
 \subsection{Scalability}
 
 \subsection{Security}
 
+\input{tex/discussion_security.tex}
+
 \section{Future Development}
 
-\section{Related Work}
-
 \section{Conclusion}
-
-\section{Appendix}
-\subsection{Section A}
-\lstinputlisting{stanzas/getForm.xml}  
 
 \section{Acknowledgements}
 
 \nocite{*}
 \bibliographystyle{IEEEannot}
 \bibliography{citations}
+
+\clearpage
+\newpage
+
+\onecolumn
+\appendix
+\section{Control Get Form}
+\label{appendix_a}
+
+\lstinputlisting{stanzas/getForm.xml}
 
 \end{document}
