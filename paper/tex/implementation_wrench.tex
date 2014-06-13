@@ -1,0 +1,59 @@
+After spending about a week reading through the SleekXMPP code we began to write
+our own implementations of the Control and Sensor XEPs, so that we could compare
+it against the SleekXMPP versions. Then we reviewed what parts of implementing
+an XEP we needed to understand to begin developing Provisioning.
+
+Before we began coding Provisioning we wrote our own IoT device and console to
+exist as proof of concepts of how devices would interact over. The device would
+implement a variety of features from Sensor and Control acting as a server (i.e.
+not as an XMPP server, but as a device serving sensordata and controllable
+fields that a client, in our context the console, would connect to and interact
+with). Then we would implement our IoT console, which would act like an end user
+application, sending sensordata requests and control commands to affect the
+device. Once we had this implemented, we would develop the provisioning
+component to then run a provisioning server with Prosody to handle Provisioning
+protocol being sent between the IoT console and device.
+
+However we ran into a snag. Once we got our device and console implemented we
+were only receiving <service-unavailable> Iq errors. In this context, that meant
+that when sending a sensordata request or control command were not listing that
+those protocols were being supported in the discovery XEP 0030.
+
+This lead us to believe that some of the features (i.e. a supported XEP/ XMPP
+XML namespace)  were not being properly being added to the discovery plugin. We
+checked, and as far as we could tell it was properly added. Then we decided to
+run their existing discovery browser which gave us the same error but worked
+with other common XMPP clients/accounts such as a gmail account logged in with
+gchat.
+
+So next we ran the requests locally such that a device would create its own
+sensors and request them to itself. This gave us functional result but didn’t
+clarify why it wasn’t working to other devices.
+
+We used existing servers xmpp.jp \& darkdna.net, but this left us with
+inconsistent results between these two servers; we eventually ran our own server
+locally using the Prosody XMPP server.
+
+Then we were finally able to get into contact with Lance (the current maintainer
+of SleekXMPP) who was the person who committed Sensor and Control the SleekXMPP.
+He was able to help us discover what our problem was. We doing a user error. The
+method definition in python specified that the destination jid, source jid, and
+asynchronous method callback be put in that order. However we put them in that
+order with the pythons definition of position independent parameters (e.g.
+\texttt{request\_sensordata(from\_jid= ``jid1'', to\_jid= ``jid2'',
+callback=req\_callback})
+however it is just supposed to be in that order but without the positional
+independent parameter definitions (e.g. request\_sensordata( ``jid1'',  ``jid2'',
+req\_callback). This fixed our problem and allowed us to begin development on
+Provisioning.
+
+This, while a very simple developer error, eluded us for a variety of reasons.
+When we had the initial parameter definitions, SleekXMPP appeared to be doing
+what we thought it should be doing. We examined with debug messages and verified
+the sent stanza was valid \texttt{request\_sensordata()}. However instead of SleekXMPP
+throwing an error locally it sent the packet. Then sleek displayed that we
+received an error packet from the device we were sending it to; although
+examining the debug logs on the device side it didn’t specify that it was sent
+by it. So we aren’t sure if something low level internal to sleekxmpp or the
+servers we were using were spoofing a response to our sensordata request with an
+error as if it was the device sending it itself.))
